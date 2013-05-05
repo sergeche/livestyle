@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Outline demo</title>
+	<link rel="stylesheet" href="outline.css" />
+	<link rel="stylesheet" href="codemirror/codemirror.css" />
+	<link rel="stylesheet" href="codemirror/cm-espresso.css" />
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.layout__page {
+			position: absolute;
+			width: 60%;
+			height: 100%;
+		}
+
+		.layout__sidebar {
+			position: absolute;
+			left: 60%;
+			width: 40%;
+			height: 100%;
+		}
+
+		.CodeMirror {
+			position: absolute;
+			top: 10px;
+			bottom: 10px;
+			left: 10px;
+			right: 10px;
+			height: auto;
+			resize: none;
+			font-size: 11px;
+			border: 1px solid #ddd;
+			font-family: 'DejaVu Sans Mono', Consolas ,monospace;
+		}
+
+		.marker {
+			background: #fff1a6;
+		}
+
+		#reparse-btn {
+			position: absolute;
+			bottom: 20px;
+			left: 65px;
+			z-index: 10;
+		}
+	</style>
+	<script src="jquery-2.0.0.min.js"></script>
+	<script src="codemirror/codemirror.js"></script>
+	<script src="codemirror/css.js"></script>
+	<script src="../require.js"></script>
+</head>
+<body>
+	<div class="layout__page">
+		<textarea id="source">
+@import url(sample.css);
+
+/* comment */
+
+/* selector comment1 */ div, 
+/* selector comment */ blockquote 
+/* selector comment2 */{
+	background:url(./image.png);
+}
+
+@media print {
+  @import "print-main.css";
+  BODY { font-size: 10pt }
+}
+
+@media all and (min-height: 300px) {
+	body {
+		padding: 22px;
+		margin: 5px;
+		background: url(./image.png) no-repeat 10px 10px;
+	}
+}
+
+ul{background:red;padding: 1px;}</textarea>
+	</div>
+	<div class="layout__sidebar"></div>
+	<button id="reparse-btn">Re-parse</button>
+	<script>
+	require.config({
+		baseUrl: "../"
+	});
+	requirejs(['debug/outline'], function(outline) {
+		var editor = CodeMirror.fromTextArea($('#source')[0], {
+			mode: 'text/css',
+			theme: 'espresso',
+			indentWithTabs: true,
+			lineNumbers: true
+		});
+
+		var marker = null;
+
+		function pos(ix) {
+			return editor.getDoc().posFromIndex(+ix);
+		}
+
+		function createOutline() {
+			var outlineHTML = outline.create(editor.getValue())
+				.on('mouseover', '[data-range]', function(evt) {
+					if (marker) {
+						marker.clear();
+					}
+
+					var range = $(this).data('range').match(/(\d+)\s*,\s*(\d+)/);
+
+					var start = +range[1], len = +range[2];
+
+					marker = editor.getDoc().markText(
+						pos(start), 
+						pos(start + len), 
+						{
+							className: 'marker'
+						}
+					);
+				})
+				.on('mouseout', '[data-range]', function() {
+					if (marker) {
+						marker.clear();
+						marker = null;
+					}
+				});
+
+			$('.layout__sidebar').empty().append(outlineHTML);
+		}
+
+		createOutline();
+
+		$('#reparse-btn').on('click', createOutline);
+	});
+	</script>
+</body>
+</html>

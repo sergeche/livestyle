@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "parser"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "chrome"
+		}
+	],
+
+	"ternjs": {
+		"libs": ["browser", "jquery"],
+		"exclude": ["lodash.js", "require.js", "jquery*.*", "*/codemirror/*.*"],
+		"plugins": {
+			"requirejs": {
+				"baseURL": "parser/"
+			}
+		}
+	}
+}
