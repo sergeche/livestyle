@@ -1,0 +1,28 @@
+@import url(sample.css);
+
+/* comment */
+
+/* selector comment1 */ div, 
+/* selector comment */ blockquote 
+/* selector comment2 */{
+	background:url(./image.png);
+}
+
+@media print {
+  @import "print-main.css";
+  BODY { font-size: 10pt }
+  body {
+  	padding: 10px;
+  }
+}
+
+@media all and (min-height: 300px) {
+	body {
+		padding: 22px;
+		margin: 5px;
+		background: url(./image.png) no-repeat 10px 10px;
+		background: none;
+	}
+}
+
+ul{background:red;padding: 1px;}

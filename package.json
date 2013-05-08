@@ -1,0 +1,22 @@
+{
+  "name": "LiveStyle",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Bi-directional live CSS edit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sergeche/livestyle.git"
+  },
+  "keywords": [
+    "css",
+    "live",
+    "emmet"
+  ],
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "requirejs": "~2.1.5"
+  },
+  "scripts": {
+    "test": "make test"
+  }
+}

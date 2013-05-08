@@ -1,6 +1,7 @@
 define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 
 	function CSSNode(nameRange, valueRange, source, type) {
+		this.id = _.uniqueId('cn');
 		this.nameRange = nameRange;
 		this.valueRange = valueRange;
 		this.source = source;
@@ -18,6 +19,25 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 			node.parent = this;
 			this.children.push(node);
 			return node;
+		},
+
+		/**
+		 * Returns descending node with given ID
+		 * @param {String} id
+		 * @returns {CSSNode}
+		 */
+		getById: function(id) {
+			for (var i = 0, il = this.children.length, child; i < il; i++) {
+				child = this.children[i];
+				if (child.id === id) {
+					return child;
+				}
+
+				var found = child.getById(id);
+				if (found) {
+					return found;
+				}
+			}
 		},
 
 		/**
@@ -42,41 +62,7 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 				range: this.nameRange + ''
 			};
 
-			var name = this.rawName().trim();
-
-			// parse name with CSS parser to remove redundant tokens
-			var tokens = cssParser.parse(name).filter(function(item) {
-				return item.type !== 'comment';
-			});
-
-			var iter = new TokenIterator(tokens, name);
-			var selectors = [], token;
-			skipFormatting(iter);
-			iter.start = iter.pos;
-			while (iter.hasNext()) {
-				token = iter.peek();
-				if (token.type == ',') {
-					selectors.push(iter.curRange(true).substring(name).trim());
-					iter.next();
-					skipFormatting(iter);
-					iter.start = iter.pos;
-				} else {
-					iter.next();
-				}
-			}
-
-			var endPos = iter.peek() ? iter.peek().end : _.last(iter.tokens).end;
-			var r = range.create2(iter.tokens[iter.start].start, endPos);
-			selectors.push(r.substring(name).trim());
-
-			name = _(selectors)
-				.compact()
-				.invoke('toLowerCase')
-				.value()
-				.join(', ')
-				.replace(/\s+/g, ' ');
-
-			return this._nameCache.name = name;
+			return this._nameCache.name = parseSelectors(this.rawName().trim()).join(', ');;
 		},
 
 		/**
@@ -150,6 +136,45 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 			}
 		}
 	};
+
+	/**
+	 * Parses CSS selector and returns normalized parts
+	 * @param {String} source CSS selector source
+	 * @returns {Array[String]}
+	 */
+	function parseSelectors(source) {
+		// parse name with CSS parser to remove redundant tokens
+		var tokens = cssParser.parse(source).filter(function(item) {
+			return item.type !== 'comment';
+		});
+
+		var iter = new TokenIterator(tokens, source);
+		var selectors = [], token;
+		skipFormatting(iter);
+		iter.start = iter.pos;
+		while (iter.hasNext()) {
+			token = iter.peek();
+			if (token.type == ',') {
+				selectors.push(iter.curRange(true).substring(source).trim());
+				iter.next();
+				skipFormatting(iter);
+				iter.start = iter.pos;
+			} else {
+				iter.next();
+			}
+		}
+
+		var endPos = iter.peek() ? iter.peek().end : _.last(iter.tokens).end;
+		var r = range.create2(iter.tokens[iter.start].start, endPos);
+		selectors.push(r.substring(source).trim());
+
+		return _(selectors)
+			.compact()
+			.map(function(sel) {
+				return sel.trim().toLowerCase().replace(/\s+/g, ' ');
+			})
+			.value();
+	}
 
 	/**
 	 * Skips formatting tokens from current position
@@ -229,12 +254,15 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 		 */
 		build: function(source) {
 			var tokens = cssParser.parse(source);
-			console.log(tokens);
 			var iter = new TokenIterator(tokens, source);
 			while (iter.hasNext()) {
 				consumeSection(iter);	
 			}
 			return iter.root;
-		}
-	}
+		},
+
+		parseSelectors: parseSelectors,
+		CSSNode: CSSNode,
+		TokenIterator: TokenIterator
+	};
 });

@@ -16,15 +16,17 @@
 
 		.layout__page {
 			position: absolute;
-			width: 60%;
-			height: 100%;
+			top: 0;
+			right: 300px;
+			bottom: 0;
+			left: 0;
 		}
 
 		.layout__sidebar {
 			position: absolute;
-			left: 60%;
-			width: 40%;
+			width: 300px;
 			height: 100%;
+			right: 0;
 		}
 
 		.CodeMirror {
@@ -54,7 +56,7 @@
 	<script src="jquery-2.0.0.min.js"></script>
 	<script src="codemirror/codemirror.js"></script>
 	<script src="codemirror/css.js"></script>
-	<script src="../require.js"></script>
+	<script data-main="main.js" src="../require.js"></script>
 </head>
 <body>
 	<div class="layout__page">
@@ -72,6 +74,9 @@
 @media print {
   @import "print-main.css";
   BODY { font-size: 10pt }
+  body {
+  	padding: 10px;
+  }
 }
 
 @media all and (min-height: 300px) {
@@ -79,64 +84,14 @@
 		padding: 22px;
 		margin: 5px;
 		background: url(./image.png) no-repeat 10px 10px;
+		background: none;
 	}
 }
 
-ul{background:red;padding: 1px;}</textarea>
+ul{background:red;padding: 1px;}
+</textarea>
 	</div>
 	<div class="layout__sidebar"></div>
 	<button id="reparse-btn">Re-parse</button>
-	<script>
-	require.config({
-		baseUrl: "../"
-	});
-	requirejs(['debug/outline'], function(outline) {
-		var editor = CodeMirror.fromTextArea($('#source')[0], {
-			mode: 'text/css',
-			theme: 'espresso',
-			indentWithTabs: true,
-			lineNumbers: true
-		});
-
-		var marker = null;
-
-		function pos(ix) {
-			return editor.getDoc().posFromIndex(+ix);
-		}
-
-		function createOutline() {
-			var outlineHTML = outline.create(editor.getValue())
-				.on('mouseover', '[data-range]', function(evt) {
-					if (marker) {
-						marker.clear();
-					}
-
-					var range = $(this).data('range').match(/(\d+)\s*,\s*(\d+)/);
-
-					var start = +range[1], len = +range[2];
-
-					marker = editor.getDoc().markText(
-						pos(start), 
-						pos(start + len), 
-						{
-							className: 'marker'
-						}
-					);
-				})
-				.on('mouseout', '[data-range]', function() {
-					if (marker) {
-						marker.clear();
-						marker = null;
-					}
-				});
-
-			$('.layout__sidebar').empty().append(outlineHTML);
-		}
-
-		createOutline();
-
-		$('#reparse-btn').on('click', createOutline);
-	});
-	</script>
 </body>
 </html>

@@ -8,15 +8,22 @@
 		{
 			"follow_symlinks": true,
 			"path": "chrome"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "test"
 		}
 	],
 
 	"ternjs": {
 		"libs": ["browser", "jquery"],
-		"exclude": ["lodash.js", "require.js", "jquery*.*", "*/codemirror/*.*"],
+		"exclude": ["lodash.js", "require.js", "jquery*.*", "*/codemirror/*.*", "node_modules/**"],
 		"plugins": {
 			"requirejs": {
 				"baseURL": "parser/"
+			},
+			"node": {
+				"dontLoad": true
 			}
 		}
 	}

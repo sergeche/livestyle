@@ -1,3 +1,0 @@
-requirejs(['tree'], function(tree) {
-	
-});
