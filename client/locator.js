@@ -74,6 +74,21 @@ define(['lodash', 'tree'], function(_, tree) {
 			}
 
 			return ctx;
+		},
+
+		/**
+		 * Locates node in given tree by specified character position
+		 * @param  {CSSNode} cssTree
+		 * @param  {Number} pos
+		 * @return {CSSNode}
+		 */
+		locateByPos: function(cssTree, pos) {
+			for (var i = 0, il = cssTree.children.length, item; i < il; i++) {
+				item = cssTree.children[i];
+				if (item.range().include(pos)) {
+					return this.locateByPos(item, pos) || item;
+				}
+			}
 		}
 	};
 });

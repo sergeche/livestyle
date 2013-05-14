@@ -3,11 +3,11 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "parser"
+			"path": "client"
 		},
 		{
 			"follow_symlinks": true,
-			"path": "chrome"
+			"path": "server"
 		},
 		{
 			"follow_symlinks": true,
@@ -17,10 +17,10 @@
 
 	"ternjs": {
 		"libs": ["browser", "jquery"],
-		"exclude": ["lodash.js", "require.js", "jquery*.*", "*/codemirror/*.*", "node_modules/**"],
+		"exclude": ["lodash.js", "require.js", "jquery*.*", "zepto.js", "*/codemirror/*.*", "node_modules/**"],
 		"plugins": {
 			"requirejs": {
-				"baseURL": "parser/"
+				"baseURL": "client/"
 			},
 			"node": {
 				"dontLoad": true

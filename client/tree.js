@@ -94,6 +94,12 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 			});
 
 			return output;
+		},
+
+		range: function() {
+			var start = this.nameRange.start;
+			var end = this.valueRange ? this.valueRange.end : this.nameRange.end;
+			return range.create2(start, end);
 		}
 	};
 
@@ -225,6 +231,27 @@ define(['lodash', 'cssParser', 'range'], function(_, cssParser, range) {
 					skipFormatting(iter);
 					iter.start = iter.pos;
 				} else {
+					// the `:` token might be either a name-value separator
+					// or pseudo-class modifier, like :hover.
+					// We need to correctly identify this token first
+					var oldPos = iter.pos, t, shouldSkip = false;
+					while (t = iter.next()) {
+						if (t.type == '{') {
+							// looks like a pseudo-class
+							iter.backUp(1);
+							shouldSkip = true;
+							break;
+						} else if (t.type == ';' || t.type == '}') {
+							// name-value separator
+							iter.pos = oldPos;
+							break;
+						}
+					}
+
+					if (shouldSkip) {
+						continue;
+					}
+
 					// consume CSS value
 					iter.start = iter.pos;
 					iter.skipTo([';', '}']);

@@ -1,0 +1,19 @@
+body {
+	font-family: 'Lucida Grande', arial, sans-serif;
+    font-size: 11px;
+}
+
+.socket {
+	font-weight: bold;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.socket__status.active {
+	color: #0f0;
+}
+
+.socket__status.inactive {
+	color: #f00;
+}

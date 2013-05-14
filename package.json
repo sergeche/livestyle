@@ -14,9 +14,14 @@
   ],
   "devDependencies": {
     "mocha": "~1.9.0",
-    "requirejs": "~2.1.5"
+    "grunt": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.3"
   },
   "scripts": {
     "test": "make test"
+  },
+  "dependencies": {
+    "requirejs": "~2.1.5"
   }
 }

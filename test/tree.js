@@ -4,7 +4,7 @@ var path = require('path');
 var assert = require('assert');
 
 rjs.config({
-	baseUrl: path.resolve(__dirname, '../parser')
+	baseUrl: path.resolve(__dirname, '../client')
 });
 
 describe('Tree Builder', function() {
@@ -16,6 +16,7 @@ describe('Tree Builder', function() {
 			var topLevelSections = [
 				'@import url(sample.css)', 
 				'div, blockquote',
+				'.btn:hover',
 				'@media print',
 				'@media all and (min-height: 300px)',
 				'ul'
@@ -43,6 +44,16 @@ describe('Tree Builder', function() {
 			assert.equal(node.name(), 'padding', 'Located node has valid name');
 			assert.equal(locator.createPath(node), cssPath, 'Path are equal');
 
+			done();
+		});
+	});
+
+	it('should locate node by position', function(done) {
+		rjs(['tree', 'locator'], function(tree, locator) {
+			var cssTree = tree.build(style1);
+			assert.equal(locator.locateByPos(cssTree, 292).name(), 'font-size');
+			assert.equal(locator.locateByPos(cssTree, 311).name(), 'body');
+			assert.equal(locator.locateByPos(cssTree, 409).name(), 'margin');
 			done();
 		});
 	});
