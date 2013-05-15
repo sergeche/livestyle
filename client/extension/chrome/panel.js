@@ -16,21 +16,25 @@ requirejs(['lodash', 'socket'], function(_, socket) {
 	updateResources();
 
 	// socket UI
+	var statusElem = $('.socket').on('click', '.reload', function() {
+		socket.check();
+	}).find('.socket__status');
+
 	socket
 		.on('open', function() {
-			$('.socket .socket__status')
+			statusElem
 				.removeClass('inactive')
 				.addClass('active')
 				.html('Active');
 		})
 		.on('close', function() {
-			$('.socket .socket__status')
+			statusElem
 				.removeClass('active')
 				.addClass('inactive')
-				.html('Inctive');	
+				.html('Inctive <i class="reload"></i>');
 		})
 		.on('message', function(msg) {
-			
+			console.log('got message', msg);
 		})
 		.connect();
 });

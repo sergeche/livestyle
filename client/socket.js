@@ -1,5 +1,5 @@
 define(['lodash', 'eventMixin'], function(_, eventMixin) {
-	var url = 'ws://localhost:54000/ws';
+	var url = 'ws://localhost:54000/browser';
 	var sock = null;
 	var retryTimeout = 5 * 1000;
 	var autoRetry = false;
@@ -10,7 +10,7 @@ define(['lodash', 'eventMixin'], function(_, eventMixin) {
 		s.onclose = function() {
 			sock = null;
 			module.trigger('close');
-			
+
 			if (!opened) {
 				// cannot establish initial connection
 				callback && callback(false);
@@ -56,6 +56,15 @@ define(['lodash', 'eventMixin'], function(_, eventMixin) {
 		 */
 		active: function() {
 			return !!sock;
+		},
+
+		/**
+		 * Check socket activity status. If it‘s not active, tries to re-connect
+		 */
+		check: function() {
+			if (!this.active()) {
+				createSocket();
+			}
 		},
 
 		/**
