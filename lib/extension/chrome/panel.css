@@ -1,0 +1,103 @@
+body {
+	font-family: 'Lucida Grande', arial, sans-serif;
+    font-size: 11px;
+    padding: 10px;
+}
+
+@font-face {
+	font-family: 'Entypo';
+	src: url('entypo.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+i {
+	font-weight: normal;
+	font-style: normal;
+	font-size: 25px;
+	line-height: 0.5;
+	display: inline-block;
+	vertical-align: middle;
+	font-family: entypo;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+}
+
+i.reload:before {
+	content: '\1F504';
+}
+
+i.dirs:before {
+	content: '\21C6';
+}
+
+.livestyle-toggler {
+	font-size: 1.5em;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.livestyle-toggler input {
+	position: relative;
+	top: -0.2em;
+}
+
+.livestyle_disabled .mappings {
+	display: none;
+}
+
+.socket {
+	font-weight: bold;
+	float: right;
+	white-space: nowrap;
+}
+
+.socket__status.active {
+	/* color: #0d0; */
+	color: #999;
+	display: none;
+}
+
+.socket__status.inactive {
+	color: #f00;
+}
+
+.socket.active .socket__status.inactive {
+	display: none;
+}
+
+.socket.active .socket__status.active {
+	display: inline-block;
+}
+
+.socket__editor-icon {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.socket .reload {
+	color: #aaa;
+	cursor: pointer;
+	margin: -5px 0;
+	margin-left: 0.1em;
+}
+
+.sources {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.sources__item {
+	margin-bottom: 10px;
+}
+
+.sources__item i.dirs {
+	margin: 0 5px;
+}
+
+.sources__browser {
+	display: inline-block;
+	min-width: 6em;
+}

@@ -4,7 +4,10 @@ var path = require('path');
 var assert = require('assert');
 
 rjs.config({
-	baseUrl: path.resolve(__dirname, '../client')
+	baseUrl: path.resolve(__dirname, '../lib'),
+	paths: {
+		lodash: 'vendor/lodash'
+	}
 });
 
 describe('Tree Builder', function() {
