@@ -35,8 +35,8 @@ module.exports = function(grunt) {
 				}
 			},
 			st: {
-				files: './lib/vendor/*.*',
-				tasks: ['st'],
+				files: './lib/backend/*.*',
+				tasks: ['requirejs:st', 'copy:st'],
 				options: {
 					nospawn: true,
 				}
