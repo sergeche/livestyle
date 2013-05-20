@@ -28,6 +28,14 @@
 		background: url(./image.png) no-repeat 10px 10px;
 		background: none;
 	}
+
+	div {
+		padding: 10px;
+	}
+
+	div {
+		margin: 10px;
+	}	
 }
 
 ul{background:red;padding: 1px;}

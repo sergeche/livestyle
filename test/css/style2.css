@@ -1,0 +1,5 @@
+@media all and (min-height: 300px) {
+	div {
+		margin: 10px;
+	}
+}
