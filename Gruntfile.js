@@ -27,16 +27,16 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			chrome: {
-				files: './lib/**/*.*',
-				tasks: ['copy:chrome'],
+			st: {
+				files: './lib/backend/*.*',
+				tasks: ['requirejs:st', 'copy:st'],
 				options: {
 					nospawn: true,
 				}
 			},
-			st: {
-				files: './lib/backend/*.*',
-				tasks: ['requirejs:st', 'copy:st'],
+			chrome: {
+				files: './lib/**/*.*',
+				tasks: ['copy:chrome'],
 				options: {
 					nospawn: true,
 				}
