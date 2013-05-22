@@ -17,13 +17,13 @@
 
 	"ternjs": {
 		"libs": ["browser", "jquery"],
-		"exclude": ["require.js", "lodash.js", "zepto.js", "*/codemirror/*.*", "node_modules/**"],
+		"exclude": ["require.js", "lodash.js", "Gruntfile.js", "zepto.js", "*/codemirror/*.*", "node_modules/**"],
 		"plugins": {
 			"requirejs": {
 				"baseURL": "lib/",
 				"paths": {
-					"chrome": "extension/chrome",
-					"lodash": "vendor/lodash"
+					"lodash": "vendor/lodash",
+					"chrome": "extension/chrome"
 				}
 			},
 			"node": {
