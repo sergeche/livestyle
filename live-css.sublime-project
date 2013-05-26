@@ -25,10 +25,11 @@
 					"lodash": "vendor/lodash",
 					"chrome": "extension/chrome"
 				}
-			},
-			"node": {
-				"dontLoad": true
 			}
+			// ,
+			// "node": {
+			// 	"dontLoad": true
+			// }
 		}
 	},
 
