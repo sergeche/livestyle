@@ -72,4 +72,19 @@ describe('Sourcer', function() {
 		assert.equal(patch('a{b: 1}', [['a', 1], ['d', 1]], '2'), 'a{b: 1;d: 2;}');
 		assert.equal(patch('', [['a', 1], ['b', 1], ['c', 1]], '1'), 'a {\n\tb {\n\t\tc: 1;\n\t}\n}');
 	});
+
+	it('should patch source', function() {
+		var style1 = 'b{padding:10px}';
+		var style2 = 'b{margin:10px;padding:5px;}';
+
+		var patch = function(pos) {
+			var p = sourcer.makePatch(style2, pos);
+			return sourcer.applyPatch(style1, p);
+		};
+
+		assert.equal(patch(18), 'b{padding:5px}');
+		assert.equal(patch(7), 'b{padding:10px;margin:10px;}');
+		assert.equal(patch(26), 'b{padding:5px;margin:10px;}');
+		assert.equal(patch(14), 'b{padding:5px;margin:10px;}');
+	});
 });
