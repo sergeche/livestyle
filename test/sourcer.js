@@ -85,38 +85,6 @@ describe('Sourcer', function() {
 	it('should compare CSS sections', function() {
 		var diff = sourcer.compareSections(
 			'b{padding:10px;color:#fff;}', 
-			'b{margin:10px;padding:10px;}', 
-			5);
-
-		assert.deepEqual(diff, {
-			added: [{name: 'margin', value: '10px'}],
-			removed: [{name: 'color', value: '#fff', index: 1}]
-		});
-
-		diff = sourcer.compareSections(
-			'b{padding:10px;color:#fff;}', 
-			'b{}', 
-			2);
-		
-		assert.deepEqual(diff, {
-			added: [],
-			removed: [{name: 'padding', value: '10px', index: 0}, {name: 'color', value: '#fff', index: 1}]
-		});
-
-		diff = sourcer.compareSections(
-			'b{}',
-			'b{padding:10px;color:#fff;}', 
-			2);
-		
-		assert.deepEqual(diff, {
-			added: [{name: 'padding', value: '10px'}, {name: 'color', value: '#fff'}],
-			removed: [] 
-		});
-	});
-
-	it('should compare CSS sections (2)', function() {
-		var diff = sourcer.compareSections2(
-			'b{padding:10px;color:#fff;}', 
 			'b{margin:10px;padding:10px;}');
 
 		assert.deepEqual(diff, {
@@ -125,7 +93,7 @@ describe('Sourcer', function() {
 			removed: [{name: 'color', value: '#fff', index: 1}]
 		});
 
-		diff = sourcer.compareSections2(
+		diff = sourcer.compareSections(
 			'b{padding:10px;color:#fff;}', 
 			'b{}');
 		
@@ -135,7 +103,7 @@ describe('Sourcer', function() {
 			removed: [{name: 'padding', value: '10px', index: 0}, {name: 'color', value: '#fff', index: 1}]
 		});
 
-		diff = sourcer.compareSections2(
+		diff = sourcer.compareSections(
 			'b{}',
 			'b{padding:10px;color:#fff;}');
 		
@@ -145,7 +113,7 @@ describe('Sourcer', function() {
 			removed: [] 
 		});
 
-		diff = sourcer.compareSections2(
+		diff = sourcer.compareSections(
 			'b{padding:10px;color:#000;}',
 			'b{padding:10px;color:#fff;}');
 		
