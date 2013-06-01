@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Performance testing</title>
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		#source {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			bottom: 50px;
+			left: 10px;
+		}
+
+		#parse-btn {
+			position: absolute;
+			bottom: 20px;
+			left: 10px;
+			z-index: 10;
+		}
+	</style>
+	<script src="../vendor/zepto.js"></script>
+	<script data-main="perf.js" src="../require.js"></script>
+</head>
+<body>
+	<textarea id="source">
+@import url(sample.css);
+
+/* comment */
+
+/* selector comment1 */ div, 
+/* selector comment */ blockquote 
+/* selector comment2 */{
+	background:url(./image.png);
+}
+
+.btn:hover {
+	text-shadow: 0px 1px 1px rgba(0,0,0,0.2);
+	color: #fff;
+}
+
+@media print {
+  @import "print-main.css";
+  BODY { font-size: 10pt }
+  body {
+  	padding: 10px;
+  }
+}
+
+@media all and (min-height: 300px) {
+	body {
+padding: 22px;
+margin: 5px;
+background: url(./image.png) no-repeat 10px 10px;
+background: none;
+	}
+}
+
+ul{background:red;padding: 1px;}
+	</textarea>
+	<button id="parse-btn">Parse</button>
+</body>
+</html>
