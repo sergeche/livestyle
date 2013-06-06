@@ -5,22 +5,8 @@
 	<title>Emmet LiveStyle Panel</title>
 	<link rel="stylesheet" href="panel.css" />
 	<script src="./vendor/zepto.js"></script>
+	<script src="require.js" data-main="panel.js"></script>
 </head>
 <body>
-	<div class="socket">
-		<span class="socket__status active">Editor name</span>
-		<span class="socket__status inactive">No active editor <i class="reload"></i></span>
-	</div>
-	<div class="livestyle-toggler">
-		<input type="checkbox" name="enabled" id="livestyle-enabled" />
-		<label for="livestyle-enabled">Enable LiveStyle for current page</label>
-	</div>
-	
-	<div class="mappings">
-		<h2>File mapping</h2>
-		<p>Associate web page files (on the left) with editor files (on the right). Open more CSS files in editor to make them appear in drop-down menus.</p>
-		<ul class="sources"></ul>
-	</div>
-	<script src="require.js" data-main="panel.js"></script>
 </body>
 </html>

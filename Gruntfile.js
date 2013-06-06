@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						flatten: true,
-						src: ['./lib/*.js', './lib/extension/chrome/*.*'], 
+						src: ['./lib/*.js', './lib/extension/*.js', './lib/extension/chrome/*.*'], 
 						dest: './out/chrome/'
 					},
 					{
@@ -24,12 +24,18 @@ module.exports = function(grunt) {
 						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/Emmet/livestyle.js'
 					}
 				]
+			},
+			webkit: {
+				files: [{
+					src: ['./out/webkit/livestyle.js'], 
+					dest: '/Applications/WebKit.app/Contents/Frameworks/10.8/WebInspector.framework/Versions/Current/Resources/livestyle.js'
+				}]
 			}
 		},
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['copy:chrome', 'requirejs:st', 'copy:st'],
+				tasks: ['copy:chrome', 'requirejs:st', 'copy:st', 'webkit'],
 				options: {
 					nospawn: true,
 				}
@@ -51,6 +57,23 @@ module.exports = function(grunt) {
 						end: 'return require(\'backend/sublimetext\');}));'
 					}
 				}
+			},
+			webkit: {
+				options: {
+					baseUrl: './lib',
+					paths: {
+						webkit: 'extension/webkit',
+						lodash: 'vendor/lodash'
+					},
+					out: './out/webkit/livestyle.js',
+					optimize: 'none',
+					name: 'backend/almond',
+					include: ['extension/webkit/livestyle'],
+					wrap: {
+						start: '(function(root, factory){root.livestyle = factory();}(this, function () {',
+						end: 'return require(\'extension/webkit/livestyle\');}));'
+					}
+				}
 			}
 		}
 	});
@@ -62,4 +85,5 @@ module.exports = function(grunt) {
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'copy:st']);
+	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
 };
