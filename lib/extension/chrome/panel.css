@@ -125,13 +125,28 @@ i.dirs:before {
 
 .sources__item {
 	margin-bottom: 10px;
+	vertical-align: top;
 }
 
 .sources__item i.dirs {
-	margin: 0 5px;
+	margin: 2px 5px;
+	vertical-align: top;
 }
 
 .sources__browser {
 	display: inline-block;
 	min-width: 6em;
+}
+
+.sources__qs {
+	display: block;
+	font-size: 0.9em;
+	color: #aaa;
+}
+
+.sources__item select {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	top: -2px;
 }
