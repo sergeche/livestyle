@@ -11,6 +11,8 @@ rjs.config({
 });
 
 var sourcer = rjs('sourcer');
+var tree = rjs('tree');
+var cssParser = rjs('cssParser');
 
 function readCSS(cssPath) {
 	return fs.readFileSync(path.join(__dirname, cssPath), 'utf8');
@@ -18,9 +20,20 @@ function readCSS(cssPath) {
 
 describe('Performance', function() {
 	var style1 = readCSS('css/inn-blocks.css');
-	it('should be fast :)', function() {
+	var tokens, cssTree;
 
-		sourcer.applyPatch(style1, {
+	it('of CSS parser', function() {
+		tokens = cssParser.parse(style1);
+		assert(true);
+	});
+
+	it('of CSS Tree', function() {
+		cssTree = tree.build(tokens);
+		assert(true);
+	});
+
+	it('of applied patch', function() {
+		sourcer.applyPatch(cssTree, {
 			"path": [[".bmainpagefeatures__eitem",1]],
 			"properties":[{
 				"name": "font-size",
