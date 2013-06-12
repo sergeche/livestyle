@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 				files: [
 					{
 						src: ['./out/sublimetext/livestyle.js'], 
-						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/Emmet/livestyle.js'
+						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/livestyle.js'
 					}
 				]
 			},

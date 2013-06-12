@@ -27,7 +27,7 @@ describe('Performance', function() {
 				"value": "21px",
 				"index": 2
 			}],
-			"removed": null
+			"removed": []
 		});
 
 		assert(true);

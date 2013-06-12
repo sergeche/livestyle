@@ -30,7 +30,8 @@ function patch(content, path, value) {
 
 	content = sourcer.applyPatch(content, {
 		path: path,
-		properties: value instanceof Array ? value : [value]
+		properties: value instanceof Array ? value : [value],
+		removed: []
 	});
 
 	// console.log(content);
@@ -122,5 +123,59 @@ describe('Sourcer', function() {
 			updated: [{name: 'color', value: '#fff'}],
 			removed: [] 
 		});
+	});
+
+	it('should condense patches', function() {
+		var parse = function(props) {
+			if (!props) return [];
+			if (typeof props != 'string') return props;
+
+			return props.split(';').map(function(item) {
+				var parts = item.split(':');
+				return {
+					name: parts[0].trim(),
+					value: parts[1].trim()
+				};
+			});
+		}
+
+		var p = function(properties, removed, path) {
+			return {
+				path: path || 'div',
+				properties: parse(properties),
+				removed: parse(removed)
+			};
+		};
+
+		var cond = function() {
+			var args = Array.prototype.slice.call(arguments, 0);
+			var out = sourcer.condensePatches([origPatch].concat(args));
+			// console.log('cond', JSON.stringify(out));
+			return out;
+		};
+
+		var origPatch = p('padding:10px;color:red', 'margin:1px');
+
+		assert.deepEqual(
+			cond( p('position:relative') ),
+			[p('padding:10px;color:red;position:relative', 'margin:1px')]
+		);
+
+		assert.deepEqual(
+			cond( p('position:relative;padding:5px') ),
+			[p('padding:5px;color:red;position:relative', 'margin:1px')]
+		);
+
+		assert.deepEqual(
+			cond( p('', 'color:red') ),
+			[p('padding:10px;color:red', 'margin:1px;color:red')]
+		);
+		
+		assert.deepEqual(
+			cond( p('font-size:10px'), p('margin:1px') ),
+			[p('padding:10px;color:red;font-size:10px;margin:1px')]
+		);
+
+
 	});
 });
