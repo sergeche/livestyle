@@ -45,4 +45,18 @@ describe('Performance', function() {
 
 		assert(true);
 	});
+
+	it('of applied patch on text source', function() {
+		sourcer.applyPatch(style1, {
+			"path": [[".bmainpagefeatures__eitem",1]],
+			"properties":[{
+				"name": "font-size",
+				"value": "21px",
+				"index": 2
+			}],
+			"removed": []
+		});
+
+		assert(true);
+	});
 });
