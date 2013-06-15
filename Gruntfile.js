@@ -1,5 +1,36 @@
 module.exports = function(grunt) {
+
+	function chromeReqConfig(name) {
+		return {
+			options: {
+				baseUrl: './lib',
+				paths: {
+					chrome: 'extension/chrome',
+					lodash: 'vendor/lodash'
+				},
+				out: './out/chrome-ext/' + name + '.js',
+				// optimize: 'none',
+				optimize: 'uglify2',
+				name: 'backend/almond',
+				include: ['extension/chrome/' + name],
+				wrap: {
+					start: '(function() {',
+					end: '})();'
+				}
+			}
+		};
+	}
+
 	grunt.initConfig({
+		crx: {
+			livestyle: {
+				src: 'out/chrome-ext',
+				dest: grunt.option('crx') || 'out/livestyle.crx',
+				baseURL: 'http://download.emmet.io/livestyle/chrome/',
+				exclude: ['.git'],
+				privateKey: grunt.option('pem') || '~/.ssh/livestyle.pem'
+			}
+		},
 		copy: {
 			chrome: {
 				files: [
@@ -17,6 +48,40 @@ module.exports = function(grunt) {
 					}
 				]
 			},
+			'chrome-ext': {
+				files: [
+					{
+						expand: true,
+						flatten: true,
+						src: ['./lib/extension/chrome/*.*', '!./lib/extension/chrome/*.{html,js}'], 
+						dest: './out/chrome-ext/'
+					},
+					{
+						expand: true,
+						flatten: true,
+						src: ['./lib/vendor/emmet.js', './lib/extension/chrome/background.js'], 
+						dest: './out/chrome-ext'
+					}
+				]
+			},
+			'chrome-ext-html': {
+				files: [
+					{
+						expand: true,
+						flatten: true,
+						src: ['./lib/extension/chrome/*.html'], 
+						dest: './out/chrome-ext/'
+					}
+				],
+				options: {
+					processContent: function(content) {
+						return content
+							.replace(/<script src="require.js" data-main="(.+?)"><\/script>/, '<script src="$1"></script>')
+							.replace(/vendor\//, '');
+					}
+				}
+			},
+
 			st: {
 				files: [
 					{
@@ -74,10 +139,14 @@ module.exports = function(grunt) {
 						end: 'return require(\'extension/webkit/livestyle\');}));'
 					}
 				}
-			}
+			},
+
+			'chrome-devtools': chromeReqConfig('devtools'),
+			'chrome-panel': chromeReqConfig('panel'),
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-crx');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -86,4 +155,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'copy:st']);
 	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
+	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'crx']);
 };

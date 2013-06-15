@@ -2,6 +2,7 @@
 	"name": "Emmet LiveStyle",
 	"version": "1.0.0",
 	"description": "Bi-directional live CSS editing",
+	"update_url": "http://download.emmet.io/livestyle/chrome/updates.xml",
 
 	"devtools_page": "devtools.html",
 	"background": {
