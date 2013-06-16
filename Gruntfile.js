@@ -21,6 +21,25 @@ module.exports = function(grunt) {
 		};
 	}
 
+	function sublimeConfig(optimize, outName) {
+		return {
+			options: {
+				baseUrl: './lib',
+				paths: {
+					lodash: 'vendor/lodash'
+				},
+				out: './out/sublimetext/' + outName,
+				optimize: optimize ? 'uglify2' : 'none',
+				name: 'backend/almond',
+				include: ['backend/sublimetext'],
+				wrap: {
+					start: '(function(root, factory){root.livestyle = factory();}(this, function () {',
+					end: 'return require(\'backend/sublimetext\');}));'
+				}
+			}
+		}
+	}
+
 	function pad(num) {
 		return (num < 10 ? '0' : '') + num;
 	}
@@ -103,8 +122,10 @@ module.exports = function(grunt) {
 			st: {
 				files: [
 					{
-						src: ['./out/sublimetext/livestyle.js'], 
-						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/livestyle.js'
+						expand: true,
+						flatten: true,
+						src: ['./out/sublimetext/{livestyle,livestyle-src}.js'], 
+						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/'
 					}
 				]
 			},
@@ -134,22 +155,8 @@ module.exports = function(grunt) {
 			}
 		},
 		requirejs: {
-			st: {
-				options: {
-					baseUrl: './lib',
-					paths: {
-						lodash: 'vendor/lodash'
-					},
-					out: './out/sublimetext/livestyle.js',
-					optimize: 'none',
-					name: 'backend/almond',
-					include: ['backend/sublimetext'],
-					wrap: {
-						start: '(function(root, factory){root.livestyle = factory();}(this, function () {',
-						end: 'return require(\'backend/sublimetext\');}));'
-					}
-				}
-			},
+			st: sublimeConfig(true, 'livestyle.js'),
+			'st-src': sublimeConfig(false, 'livestyle-src.js'),
 			webkit: {
 				options: {
 					baseUrl: './lib',
@@ -194,7 +201,7 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
-	grunt.registerTask('st', ['requirejs:st', 'copy:st']);
+	grunt.registerTask('st', ['requirejs:st', 'requirejs:st-src', 'copy:st']);
 	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
 	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'copy:chrome-ext-manifest', 'crx']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
