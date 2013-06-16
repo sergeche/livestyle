@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-
+	var updateManifest = true;
 	function chromeReqConfig(name) {
 		return {
 			options: {
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						flatten: true,
-						src: ['./lib/extension/chrome/*.*', '!./lib/extension/chrome/*.{html,js}'], 
+						src: ['./lib/extension/chrome/*.*', '!./lib/extension/chrome/*.{html,js}', '!./lib/extension/chrome/manifest.json'], 
 						dest: './out/chrome-ext/'
 					},
 					{
@@ -78,6 +78,19 @@ module.exports = function(grunt) {
 						return content
 							.replace(/<script src="require.js" data-main="(.+?)"><\/script>/, '<script src="$1"></script>')
 							.replace(/vendor\//, '');
+					}
+				}
+			},
+			'chrome-ext-manifest': {
+				files: [{expand: true, flatten: true, src: ['./lib/extension/chrome/manifest.json'], dest: './out/chrome-ext/'}],
+				options: {
+					processContent: function(content) {
+						if (updateManifest) {
+							var manifest = JSON.parse(content);
+							manifest.version += '.' + Date.now();
+							content = JSON.stringify(manifest);
+						}
+						return content;
 					}
 				}
 			},
@@ -155,5 +168,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'copy:st']);
 	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
-	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'crx']);
+	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'copy:chrome-ext-manifest', 'crx']);
 };
