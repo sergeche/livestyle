@@ -21,6 +21,10 @@ module.exports = function(grunt) {
 		};
 	}
 
+	function pad(num) {
+		return (num < 10 ? '0' : '') + num;
+	}
+
 	grunt.initConfig({
 		crx: {
 			livestyle: {
@@ -87,7 +91,8 @@ module.exports = function(grunt) {
 					processContent: function(content) {
 						if (updateManifest) {
 							var manifest = JSON.parse(content);
-							manifest.version += '.' + Date.now();
+							var dt = new Date();
+							manifest.version += '.' + (dt.getMonth() + 1) + pad(dt.getDate());
 							content = JSON.stringify(manifest);
 						}
 						return content;
@@ -108,7 +113,16 @@ module.exports = function(grunt) {
 					src: ['./out/webkit/livestyle.js'], 
 					dest: '/Applications/WebKit.app/Contents/Frameworks/10.8/WebInspector.framework/Versions/Current/Resources/livestyle.js'
 				}]
+			},
+			readme: {
+				files: [{
+					expand: true,
+					flatten: true,
+					src: ['./template/*.{css,js}'], 
+					dest: grunt.option('readme') || 'out/html'
+				}]
 			}
+
 		},
 		watch: {
 			plugins: {
@@ -156,10 +170,24 @@ module.exports = function(grunt) {
 
 			'chrome-devtools': chromeReqConfig('devtools'),
 			'chrome-panel': chromeReqConfig('panel'),
+		},
+		markdown: {
+			readme: {
+				files: [{
+					expand: true,
+					src: 'README.md',
+					dest: grunt.option('readme') || 'out/html',
+					ext: '.html'
+				}],
+				options: {
+					template: 'templates/index.html'
+				}
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-crx');
+	grunt.loadNpmTasks('grunt-markdown');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -169,4 +197,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('st', ['requirejs:st', 'copy:st']);
 	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
 	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'copy:chrome-ext-manifest', 'crx']);
+	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
 };
