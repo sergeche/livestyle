@@ -118,7 +118,7 @@ module.exports = function(grunt) {
 				files: [{
 					expand: true,
 					flatten: true,
-					src: ['./template/*.{css,js}'], 
+					src: ['templates/*.{css,js}'], 
 					dest: grunt.option('readme') || 'out/html'
 				}]
 			}
