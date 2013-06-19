@@ -25,7 +25,7 @@ describe('Tree Builder', function() {
 
 	it('should parse CSS', function() {
 		var topLevelSections = [
-			'@import url(sample.css)', 
+			'@import', 
 			'div, blockquote',
 			'.btn:hover',
 			'@media print',

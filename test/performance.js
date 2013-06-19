@@ -20,7 +20,13 @@ function readCSS(cssPath) {
 
 describe('Performance', function() {
 	var style1 = readCSS('css/inn-blocks.css');
+	var style2 = readCSS('css/style4.css');
 	var tokens, cssTree;
+
+	it('of tree builder for avg. CSS file', function() {
+		cssTree = tree.build(style2);
+		assert(true);
+	});
 
 	it('of CSS parser', function() {
 		tokens = cssParser.parse(style1);
