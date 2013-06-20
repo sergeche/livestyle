@@ -1,0 +1,48 @@
+@import url(style1.css);
+
+/* Updated at-rule */
+@import url(style3.css);
+
+a {
+	color: #000;
+}
+
+/* Renamed (remove + add) */
+b2 {
+	padding: 10px;
+}
+
+/* Removed */
+/* c {
+	font-size: 12px;
+	margin: 10px;
+} */
+
+/* Renamed (remove + add) */
+d2 {
+	padding: 10px;
+	font-size: 10px;
+}
+
+/* Updated */
+e {
+	position: relative;
+	font-size: 12px;
+}
+
+/* Added */
+f {
+	position: absolute;
+}
+
+@keyframes test {
+	0% { top: 0; left: 0; }
+	30% { top: 50px; }
+	/* Added nested rule */
+	40% { top: 60px; }
+	/* Removed nested rule */
+	/* 50% { top: 50px; } */
+	68%, 72% { left: 50px; }
+	/* Updated nested rule */
+	100% { top: 100px; left: 50%; }
+}

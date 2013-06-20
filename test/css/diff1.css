@@ -1,0 +1,31 @@
+@import url(style1.css);
+@import url(style2.css);
+
+a {
+	color: #000;
+}
+
+b {
+	padding: 10px;
+}
+
+c {
+	font-size: 12px;
+	margin: 10px;
+}
+
+d {
+	position: absolute;
+}
+
+e {
+	position: relative;
+}
+
+@keyframes test {
+	0% { top: 0; left: 0; }
+	30% { top: 50px; }
+	50% { top: 50px; }
+	68%, 72% { left: 50px; }
+	100% { top: 100px; left: 100%; }
+}
