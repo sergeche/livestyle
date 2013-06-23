@@ -17,7 +17,7 @@
 
 	"ternjs": {
 		"libs": ["browser", "jquery"],
-		"exclude": ["require.js", "lodash.js", "Gruntfile.js", "zepto.js", "*/codemirror/*.*", "node_modules/**", "emmet.js"],
+		"exclude": ["require.js", "lodash.js", "Gruntfile.js", "zepto.js", "*/codemirror/*.*", "node_modules/**", "emmet.js", "out/**", "test/**"],
 		"plugins": {
 			"requirejs": {
 				"baseURL": "lib/",
