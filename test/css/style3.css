@@ -19,7 +19,7 @@ a:link {
 h1, h2 + h3 {
 	margin: 0;
 	font-size: 12px;
-	-webkit-transform: scale(0.6);
+	-webkit-transform: scale(0.6)
 }
 
 @font-face {
@@ -27,7 +27,7 @@ h1, h2 + h3 {
 }
 
 @page :first {
-	margin:2in;
+	margin:2in
 }
 
 div {

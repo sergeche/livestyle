@@ -20,6 +20,7 @@ function readCSS(cssPath) {
 describe('Tree Builder', function() {
 	var style1 = readCSS('css/style1.css');
 	var style2 = readCSS('css/style2.css');
+	var style3 = readCSS('css/style3.css');
 	var invalid = readCSS('css/invalid.css');
 
 	it('should parse CSS', function() {
@@ -63,5 +64,48 @@ describe('Tree Builder', function() {
 		assert.equal(node.name(), 'body');
 		assert.equal(node.children[0].name(), 'padding');
 		assert.equal(node.children[0].value(), '10px');
+	});
+
+	it('should store proper source tokens', function() {
+		var cssTree = tree.build(style3);
+		var topSectionRanges = [
+			[0, 17],
+			[18, 42],
+			[44, 90],
+			[91, 110],
+			[111, 154],
+			[155, 232],
+			[233, 291],
+			[292, 321],
+			[322, 348],
+			[349, 500],
+			[501, 552],
+			[553, 720]
+		];
+
+		var valueRanges = [
+			[170, 180],
+			[182, 198],
+			[200, 230]
+		];
+
+		var innerRanges = [
+			[368, 392],
+			[393, 412],
+			[439, 464],
+			[465, 498]
+		];
+
+		cssTree.children.forEach(function(child, i) {
+			assert.deepEqual(child.fullRange().toArray(), topSectionRanges[i]);
+		});
+
+		cssTree.children[5].children.forEach(function(child, i) {
+			assert.deepEqual(child.fullRange().toArray(), valueRanges[i]);
+		});
+
+		cssTree.children[9].children.forEach(function(child, i) {
+			assert.deepEqual(child.fullRange().toArray(), innerRanges[i]);
+		});
 	});
 });
