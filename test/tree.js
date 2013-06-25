@@ -108,4 +108,79 @@ describe('Tree Builder', function() {
 			assert.deepEqual(child.fullRange().toArray(), innerRanges[i]);
 		});
 	});
+
+	it('should properly modify tree when removing nodes', function() {
+		var cssTree = tree.build(style1);
+		var section = cssTree.children[1];
+		cssTree.children[1].remove();
+
+		var sections = [
+			['@import', [0, 7]],
+			['.btn:hover', [66, 77]],
+			['@media print', [139, 152]],
+			['@media all and (min-height: 300px)', [243, 278]],
+			['ul', [454, 456]]
+		];
+
+		cssTree.children.forEach(function(item, i) {
+			assert.equal(item.name(), sections[i][0]);
+			assert.deepEqual(item.nameRange.toArray(), sections[i][1]);
+		});
+
+		var innerSectionProps = [
+			['padding', [290, 297]],
+			['margin', [307, 313]],
+			['background', [322, 332]],
+			['background', [374, 384]]
+		];
+
+		var innerSection = locator.locate(cssTree, '@media all and (min-height: 300px)/body');
+		innerSection.children.forEach(function(item, i) {
+			assert.equal(item.name(), innerSectionProps[i][0]);
+			assert.deepEqual(item.nameRange.toArray(), innerSectionProps[i][1]);
+		});
+	});
+
+	it('should properly modify tree when inserting nodes', function() {
+		var cssTree = tree.build(style1);
+		var subtree = tree.build('blockquote {\n\tpadding: 10px;\n}\n  ');
+
+		var child = cssTree.children[3];
+		child.insert(subtree, 1);
+
+		var topSections = [
+			['@import', [0, 7]],
+			['div, blockquote', [65, 129]],
+			['.btn:hover', [164, 175]],
+			['@media print', [237, 250]],
+			['@media all and (min-height: 300px)', [656, 691]],
+			['ul', [867, 869]]
+		];
+
+		cssTree.children.forEach(function(item, i) {
+			assert.equal(item.name(), topSections[i][0]);
+			assert.deepEqual(item.nameRange.toArray(), topSections[i][1]);
+		});
+
+		var childSections = [
+			['@import', [254, 261]],
+			['blockquote', [282, 293]],
+			['BODY', [282, 287]],
+			['body', [309, 314]]
+		];
+		child.children.forEach(function(item, i) {
+			assert.equal(item.name(), childSections[i][0]);
+			assert.deepEqual(item.nameRange.toArray(), childSections[i][1]);
+		});
+
+		// modify empty tree
+		var empty = tree.build('');
+		empty.insert(tree.build('a{b:c}'));
+		assert.equal(empty.source(), 'a{b:c}');
+
+		// modify empty subsection
+		empty = tree.build('@media print{}');
+		empty.children[0].insert(tree.build('a{b:c}'));
+		assert.equal(empty.source(), '@media print{a{b:c}}');
+	});
 });
