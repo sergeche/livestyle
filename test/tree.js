@@ -71,15 +71,15 @@ describe('Tree Builder', function() {
 		var topSectionRanges = [
 			[0, 17],
 			[18, 42],
-			[44, 90],
-			[91, 110],
-			[111, 154],
-			[155, 232],
-			[233, 291],
-			[292, 321],
-			[322, 348],
-			[349, 500],
-			[501, 552],
+			[44, 91],
+			[91, 111],
+			[111, 155],
+			[155, 233],
+			[233, 292],
+			[292, 322],
+			[322, 349],
+			[349, 501],
+			[501, 553],
 			[553, 720]
 		];
 
@@ -90,9 +90,9 @@ describe('Tree Builder', function() {
 		];
 
 		var innerRanges = [
-			[368, 392],
-			[393, 412],
-			[439, 464],
+			[368, 393],
+			[393, 439],
+			[439, 465],
 			[465, 498]
 		];
 
@@ -116,10 +116,10 @@ describe('Tree Builder', function() {
 
 		var sections = [
 			['@import', [0, 7]],
-			['.btn:hover', [66, 77]],
-			['@media print', [139, 152]],
-			['@media all and (min-height: 300px)', [243, 278]],
-			['ul', [454, 456]]
+			['.btn:hover', [65, 76]],
+			['@media print', [138, 151]],
+			['@media all and (min-height: 300px)', [242, 277]],
+			['ul', [453, 455]]
 		];
 
 		cssTree.children.forEach(function(item, i) {
@@ -128,10 +128,10 @@ describe('Tree Builder', function() {
 		});
 
 		var innerSectionProps = [
-			['padding', [290, 297]],
-			['margin', [307, 313]],
-			['background', [322, 332]],
-			['background', [374, 384]]
+			['padding', [289, 296]],
+			['margin', [306, 312]],
+			['background', [321, 331]],
+			['background', [373, 383]]
 		];
 
 		var innerSection = locator.locate(cssTree, '@media all and (min-height: 300px)/body');
@@ -143,18 +143,20 @@ describe('Tree Builder', function() {
 
 	it('should properly modify tree when inserting nodes', function() {
 		var cssTree = tree.build(style1);
-		var subtree = tree.build('blockquote {\n\tpadding: 10px;\n}\n  ');
+		var subtree = tree.build('blockquote {\n\tpadding: 10px;\n  }\n  ');
 
 		var child = cssTree.children[3];
 		child.insert(subtree, 1);
+
+		// console.log(cssTree.source());
 
 		var topSections = [
 			['@import', [0, 7]],
 			['div, blockquote', [65, 129]],
 			['.btn:hover', [164, 175]],
 			['@media print', [237, 250]],
-			['@media all and (min-height: 300px)', [656, 691]],
-			['ul', [867, 869]]
+			['@media all and (min-height: 300px)', [376, 411]],
+			['ul', [587, 589]]
 		];
 
 		cssTree.children.forEach(function(item, i) {
@@ -165,8 +167,8 @@ describe('Tree Builder', function() {
 		var childSections = [
 			['@import', [254, 261]],
 			['blockquote', [282, 293]],
-			['BODY', [282, 287]],
-			['body', [309, 314]]
+			['BODY', [317, 322]],
+			['body', [344, 349]]
 		];
 		child.children.forEach(function(item, i) {
 			assert.equal(item.name(), childSections[i][0]);

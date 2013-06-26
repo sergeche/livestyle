@@ -10,7 +10,7 @@ rjs.config({
 	}
 });
 
-var sourcer = rjs('sourcer');
+var patch = rjs('patch');
 var tree = rjs('tree');
 var cssParser = rjs('cssParser');
 
@@ -39,8 +39,8 @@ describe('Performance', function() {
 	});
 
 	it('of applied patch', function() {
-		sourcer.applyPatch(cssTree, {
-			"path": [[".bmainpagefeatures__eitem",1]],
+		patch.patch(cssTree, {
+			"path": ".bmainpagefeatures__eitem",
 			"properties":[{
 				"name": "font-size",
 				"value": "21px",
@@ -53,8 +53,8 @@ describe('Performance', function() {
 	});
 
 	it('of applied patch on text source', function() {
-		sourcer.applyPatch(style1, {
-			"path": [[".bmainpagefeatures__eitem",1]],
+		patch.patch(style1, {
+			"path": ".bmainpagefeatures__eitem",
 			"properties":[{
 				"name": "font-size",
 				"value": "21px",
