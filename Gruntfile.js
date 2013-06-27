@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 	var updateManifest = true;
-	function chromeReqConfig(name) {
+	function chromeReqConfig(name, optimize) {
 		return {
 			options: {
 				baseUrl: './lib',
@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 				},
 				out: './out/chrome-ext/' + name + '.js',
 				// optimize: 'none',
-				optimize: 'uglify2',
+				optimize: optimize || 'uglify2',
 				name: 'backend/almond',
 				include: ['extension/chrome/' + name],
 				wrap: {
@@ -68,6 +68,12 @@ module.exports = function(grunt) {
 						flatten: true,
 						src: ['./lib/vendor/*.js'], 
 						dest: './out/chrome/vendor'
+					},
+					{
+						expand: true,
+						flatten: true,
+						src: ['./out/worker.js'], 
+						dest: './out/chrome'
 					}
 				]
 			},
@@ -148,7 +154,7 @@ module.exports = function(grunt) {
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['copy:chrome', 'requirejs:st', 'requirejs:st-src', 'copy:st', 'webkit'],
+				tasks: ['chrome', 'requirejs:st', 'requirejs:st-src', 'copy:st', 'webkit'],
 				options: {
 					nospawn: true,
 				}
@@ -175,6 +181,18 @@ module.exports = function(grunt) {
 				}
 			},
 
+			worker: {
+				options: {
+					baseUrl: './lib',
+					paths: {
+						lodash: 'vendor/lodash'
+					},
+					out: './out/worker.js',
+					optimize: 'none',
+					name: 'backend/almond',
+					include: ['vendor/emmet', 'extension/worker']
+				}
+			},
 			'chrome-devtools': chromeReqConfig('devtools'),
 			'chrome-panel': chromeReqConfig('panel'),
 		},
@@ -201,6 +219,7 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
+	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'requirejs:st-src', 'copy:st']);
 	grunt.registerTask('webkit', ['requirejs:webkit', 'copy:webkit']);
 	grunt.registerTask('pack-chrome', ['requirejs:chrome-devtools', 'requirejs:chrome-panel', 'copy:chrome-ext', 'copy:chrome-ext-html', 'copy:chrome-ext-manifest', 'crx']);

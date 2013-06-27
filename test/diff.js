@@ -80,4 +80,21 @@ describe('Diff', function() {
 		assert.deepEqual(getPaths('add'), ['.page-header2 .product-list-item'], 'Added sections');
 		assert.deepEqual(getPaths('remove'), ['.page-header .product-list-item|2', '.page-header .product-list-author'], 'Removed sections');
 	});
+
+	it('should find in edge cases', function() {
+		var patches = diff.diff('a{b:c} d{e:f}', 'a{b:c}');
+		// console.log(JSON.stringify(patches));
+
+		var getPaths = function(action) {
+			return _.pluck(filter(patches, action), 'path');
+		};
+
+		assert.deepEqual(getPaths('remove'), ['d'], 'Removed sections');
+
+		patches = diff.diff('a{b:c;d:e}', 'a{b:c}');
+		assert.deepEqual(getPaths('update'), ['a']);
+		assert.deepEqual(patches[0].removed.map(function(p) {
+			return p.name;
+		}), ['d']);
+	});
 });
