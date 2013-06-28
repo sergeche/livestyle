@@ -1,5 +1,15 @@
 module.exports = function(grunt) {
 	var updateManifest = true;
+
+	function fc(data) {
+		var out = {expand: true, flatten: true};
+		Object.keys(data).forEach(function(k) {
+			out[k] = data[k];
+		});
+
+		return out;
+	}
+
 	function chromeReqConfig(name, optimize) {
 		return {
 			options: {
@@ -57,50 +67,38 @@ module.exports = function(grunt) {
 		copy: {
 			chrome: {
 				files: [
-					{
-						expand: true,
-						flatten: true,
+					fc({
 						src: ['./lib/*.js', './lib/extension/*.js', './lib/extension/chrome/*.*'], 
 						dest: './out/chrome/'
-					},
-					{
-						expand: true,
-						flatten: true,
+					}),
+					fc({
 						src: ['./lib/vendor/*.js'], 
 						dest: './out/chrome/vendor'
-					},
-					{
-						expand: true,
-						flatten: true,
+					}),
+					fc({
 						src: ['./out/worker.js'], 
 						dest: './out/chrome'
-					}
+					})
 				]
 			},
 			'chrome-ext': {
 				files: [
-					{
-						expand: true,
-						flatten: true,
+					fc({
 						src: ['./lib/extension/chrome/*.*', '!./lib/extension/chrome/*.{html,js}', '!./lib/extension/chrome/manifest.json'], 
 						dest: './out/chrome-ext/'
-					},
-					{
-						expand: true,
-						flatten: true,
+					}),
+					fc({
 						src: ['./lib/vendor/emmet.js', './lib/extension/chrome/background.js'], 
 						dest: './out/chrome-ext'
-					}
+					})
 				]
 			},
 			'chrome-ext-html': {
 				files: [
-					{
-						expand: true,
-						flatten: true,
+					fc({
 						src: ['./lib/extension/chrome/*.html'], 
 						dest: './out/chrome-ext/'
-					}
+					})
 				],
 				options: {
 					processContent: function(content) {
@@ -111,7 +109,12 @@ module.exports = function(grunt) {
 				}
 			},
 			'chrome-ext-manifest': {
-				files: [{expand: true, flatten: true, src: ['./lib/extension/chrome/manifest.json'], dest: './out/chrome-ext/'}],
+				files: [
+					fc({
+						src: ['./lib/extension/chrome/manifest.json'], 
+						dest: './out/chrome-ext/'
+					})
+				],
 				options: {
 					processContent: function(content) {
 						if (updateManifest) {
@@ -127,12 +130,14 @@ module.exports = function(grunt) {
 
 			st: {
 				files: [
-					{
-						expand: true,
-						flatten: true,
+					fc({
 						src: ['./out/sublimetext/{livestyle,livestyle-src}.js'], 
 						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/'
-					}
+					}),
+					fc({
+						src: ['./lib/vendor/emmet.js'], 
+						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/'
+					})
 				]
 			},
 			webkit: {
@@ -142,12 +147,12 @@ module.exports = function(grunt) {
 				}]
 			},
 			readme: {
-				files: [{
-					expand: true,
-					flatten: true,
-					src: ['templates/*.{css,js}'], 
-					dest: grunt.option('readme') || 'out/html'
-				}]
+				files: [
+					fc({
+						src: ['templates/*.{css,js}'], 
+						dest: grunt.option('readme') || 'out/html'
+					})
+				]
 			}
 
 		},
