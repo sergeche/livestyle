@@ -26,6 +26,7 @@
 
 .em-select__opt {
 	position: absolute;
+	z-index: 100;
 	display: block;
 	list-style-type: none;
 	padding: 5px 0;
@@ -53,6 +54,7 @@
 	line-height: 1;
 	cursor: default;
 	border: 1px solid transparent;
+	position: relative;
 }
 
 .em-select__opt-item:hover {

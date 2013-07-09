@@ -150,3 +150,42 @@ i.dirs:before {
 	position: relative;
 	top: -2px;
 }
+
+/* Patch history widget */
+.patch-download {
+	font-family: entypo;
+	font-size: 20px;
+	color: #e32a1f;
+	display: inline-block;
+	text-decoration: none;
+	padding: 0 2px;
+	line-height: 0.6;
+	cursor: pointer;
+	border: 1px solid #e32a1f;
+
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+
+	-webkit-font-smoothing: antialiased;
+}
+
+.patch-history__wrap {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.patch-history__wrap .em-select__opt-item {
+	padding-right: 25px;
+}
+
+.em-select__opt-item .patch-download {
+	right: 3px;
+	top: 1px;
+	position: absolute;
+}
+
+.em-select__opt-item:hover .patch-download {
+	color: #fff;
+	border-color: #fff;
+}

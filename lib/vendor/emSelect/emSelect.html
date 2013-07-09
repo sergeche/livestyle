@@ -4,6 +4,46 @@
 	<meta charset="UTF-8" />
 	<title>emSelect demo</title>
 	<link rel="stylesheet" href="emSelect.css" />
+	<style>
+		.dw {
+			font-size: 11px;
+			background: rgb(202, 60, 60);
+		}
+
+		@font-face {
+			font-family: 'Entypo';
+			src: url('../../extension/chrome/entypo.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+
+		.patch-download {
+			font-family: entypo;
+			font-size: 20px;
+			color: #e32a1f;
+			display: inline-block;
+			text-decoration: none;
+			padding: 0 4px;
+			line-height: 0.6;
+			cursor: pointer;
+
+			border: 1px solid #e32a1f;
+
+			
+
+			-webkit-border-radius: 2px;
+			-moz-border-radius: 2px;
+			border-radius: 2px;
+
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.em-select .patch-download {
+			right: 3px;
+			top: 1px;
+			position: absolute;
+		}
+	</style>
 	<script src="emSelect.js"></script>
 </head>
 <body>
@@ -14,7 +54,14 @@
 	</select>
 	<script>
 		emSelect(document.getElementsByTagName('select')[0], {
-			label: 'Custom label'
+			label: 'Custom label',
+			onItemCreate: function(item) {
+				var dwBtn = document.createElement('span');
+				dwBtn.className = 'patch-download';
+				dwBtn.innerHTML = '&#11015;';
+				dwBtn.setAttribute('title', 'Download patch');
+				item.appendChild(dwBtn);
+			}
 		});
 	</script>
 </body>

@@ -72,7 +72,7 @@ module.exports = function(grunt) {
 						dest: './out/chrome/'
 					}),
 					fc({
-						src: ['./lib/vendor/*.js'], 
+						src: ['./lib/vendor/**/*.{js,css}'], 
 						dest: './out/chrome/vendor'
 					}),
 					fc({
