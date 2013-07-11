@@ -25,6 +25,10 @@ i.dirs:before {
 	content: '\21C6';
 }
 
+i.remove:before {
+	content: '\274C';
+}
+
 .livestyle {
 	font-family: 'Lucida Grande', arial, sans-serif;
 	font-size: 11px;
@@ -131,6 +135,19 @@ i.dirs:before {
 .sources__item i.dirs {
 	margin: 2px 5px;
 	vertical-align: top;
+}
+
+.sources__item i.remove {
+	display: none;
+}
+
+.sources__item_user i.remove {
+	display: inline-block;
+	position: absolute;
+	font-size: 30px;
+	margin-left: -13px;
+	color: red;
+	cursor: pointer;
 }
 
 .sources__browser {

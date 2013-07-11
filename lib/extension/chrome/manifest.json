@@ -19,7 +19,8 @@
 		"storage",
 		"tabs",
 		"http://*/",
-		"https://*/"
+		"https://*/",
+		"file://*/*"
 	],
 
 	"manifest_version": 2,
