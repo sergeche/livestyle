@@ -68,23 +68,22 @@ describe('Patcher', function() {
 		assert.equal(applyPatch('', 'a/b', 'c:1'), 'a {\n\tb {\n\t\tc: 1;\n\t}\n}');
 	});
 
-	// it('should patch source', function() {
-	// 	var style1 = 'b{padding:10px}';
-	// 	var style2 = 'b{margin:10px;padding:5px;}';
+	it('should update section value', function() {
+		var css = '@import url(s1.css); body{padding:10px}';
+		var p = {path: '@import', value: 'url(s3.css)'};
 
-	// 	var patch = function(pos) {
-	// 		var p = sourcer.makePatch(style2, pos);
-	// 		var src = sourcer.applyPatch(style1, p);
-	// 		// console.log(src);
-	// 		return src;
-	// 	};
+		assert.equal(patch.patch(css, p), '@import url(s3.css); body{padding:10px}');
+		assert.equal(patch.patch('body{padding:10px}', p), '@import url(s3.css);\nbody{padding:10px}');
 
-	// 	assert.equal(patch(18), 'b{padding:5px}');
-	// 	assert.equal(patch(7),  'b{padding:10px;margin:10px;}');
-	// 	assert.equal(patch(26), 'b{padding:5px;margin:10px;}');
-	// 	assert.equal(patch(14), 'b{padding:5px;margin:10px;}');
-	// });
-
+		assert.equal(
+			patch.patch('@import url(s1.css);\nbody{padding:10px}', {
+				path: '@import|2', 
+				value: 'url(s2.css)',
+				action: 'add'
+			}), 
+			'@import url(s1.css);\n@import url(s2.css);\nbody{padding:10px}'
+		);
+	});
 
 	it('should condense patches', function() {
 		var parse = function(props) {

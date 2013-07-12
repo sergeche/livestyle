@@ -48,7 +48,7 @@ describe('Diff', function() {
 
 		assert.deepEqual(getPaths('update'), ['@import|2', 'e', '@keyframes test/100%'], 'Updated sections');
 		assert.deepEqual(getPaths('add'), ['b2', 'd2', 'f', '@keyframes test/40%'], 'Added sections');
-		assert.deepEqual(getPaths('remove'), ['b', 'c', 'd', '@keyframes test/50%'], 'Removed sections');
+		assert.deepEqual(getPaths('remove'), ['@import|3', 'b', 'c', 'd', '@keyframes test/50%'], 'Removed sections');
 
 		// compare contents of updated sections
 		var importSection = _.find(filter(patches, 'update'), function(p) {
@@ -81,7 +81,7 @@ describe('Diff', function() {
 		assert.deepEqual(getPaths('remove'), ['.page-header .product-list-item|2', '.page-header .product-list-author'], 'Removed sections');
 	});
 
-	it('should find in edge cases', function() {
+	it('should find difference in edge cases', function() {
 		var patches = diff.diff('a{b:c} d{e:f}', 'a{b:c}');
 		// console.log(JSON.stringify(patches));
 
@@ -96,5 +96,11 @@ describe('Diff', function() {
 		assert.deepEqual(patches[0].removed.map(function(p) {
 			return p.name;
 		}), ['d']);
+
+
+		patches = diff.diff('@import url(a);', '@import url(a);@import url(b);');
+		assert.deepEqual(getPaths('add'), ['@import|2']);
+		assert.equal(patches.length, 1);
+		assert.equal(patches[0].value, 'url(b)');
 	});
 });

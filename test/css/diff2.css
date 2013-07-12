@@ -3,6 +3,8 @@
 /* Updated at-rule */
 @import url(style3.css);
 
+/* Removed @import url(style5.css); */
+
 a {
 	color: #000;
 }
