@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['chrome', 'requirejs:st', 'requirejs:st-src', 'copy:st'],
+				tasks: ['chrome', 'webkit', 'st'],
 				options: {
 					nospawn: true,
 				}
@@ -173,7 +173,8 @@ module.exports = function(grunt) {
 					baseUrl: './lib',
 					paths: {
 						webkit: 'extension/webkit',
-						lodash: 'vendor/lodash'
+						lodash: 'vendor/lodash',
+						emSelect: 'vendor/emSelect/emSelect'
 					},
 					out: './out/webkit/livestyle.js',
 					optimize: 'none',
