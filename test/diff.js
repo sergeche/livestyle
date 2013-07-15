@@ -103,4 +103,33 @@ describe('Diff', function() {
 		assert.equal(patches.length, 1);
 		assert.equal(patches[0].value, 'url(b)');
 	});
+
+	it('simulates real user input', function() {
+		var patches;
+		var state1 = 'a{v:1} b{v:1} c{v:1} b{x:2}';
+		var state2 = 'a{v:1} # b{v:1} c{v:1} b{x:2}';
+		var state3 = 'a{v:1} #d b{v:1} c{v:1} b{x:2}';
+		var state4 = 'a{v:1} #d{} b{v:1} c{v:1} b{x:2}';
+		var state5 = 'a{v:1} c{v:1} b{x:2}';
+
+		var getPaths = function(action) {
+			return _.pluck(filter(patches, action), 'path');
+		};
+
+		patches = diff.diff(state1, state2);
+		assert.deepEqual(getPaths('add'), ['# b']);
+		assert.deepEqual(getPaths('remove'), ['b']);
+
+		patches = diff.diff(state2, state3);
+		assert.deepEqual(getPaths('add'), ['#d b']);
+		assert.deepEqual(getPaths('remove'), ['# b']);
+
+		patches = diff.diff(state3, state4);
+		assert.deepEqual(getPaths('add'), ['#d', 'b']);
+		assert.deepEqual(getPaths('remove'), ['#d b']);
+
+		patches = diff.diff(state4, state5);
+		assert.deepEqual(getPaths('add'), []);
+		assert.deepEqual(getPaths('remove'), ['#d', 'b']);
+	});
 });
