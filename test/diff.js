@@ -111,6 +111,7 @@ describe('Diff', function() {
 		var state3 = 'a{v:1} #d b{v:1} c{v:1} b{x:2}';
 		var state4 = 'a{v:1} #d{} b{v:1} c{v:1} b{x:2}';
 		var state5 = 'a{v:1} c{v:1} b{x:2}';
+		var state6 = '';
 
 		var getPaths = function(action) {
 			return _.pluck(filter(patches, action), 'path');
@@ -131,5 +132,9 @@ describe('Diff', function() {
 		patches = diff.diff(state4, state5);
 		assert.deepEqual(getPaths('add'), []);
 		assert.deepEqual(getPaths('remove'), ['#d', 'b']);
+
+		patches = diff.diff(state5, state6);
+		assert.deepEqual(getPaths('add'), []);
+		assert.deepEqual(getPaths('remove'), ['a', 'c', 'b']);
 	});
 });
