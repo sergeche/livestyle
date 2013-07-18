@@ -11,6 +11,7 @@ rjs.config({
 });
 
 var patch = rjs('patch');
+var diff = rjs('diff');
 var tree = rjs('tree');
 var cssParser = rjs('cssParser');
 
@@ -21,7 +22,14 @@ function readCSS(cssPath) {
 describe('Performance', function() {
 	var style1 = readCSS('css/inn-blocks.css');
 	var style2 = readCSS('css/style4.css');
+	var style3 = readCSS('css/ayyo.css');
+	var style3diff = readCSS('css/ayyo-diff.css');
 	var tokens, cssTree;
+
+	it('of tree builder for large CSS file', function() {
+		cssTree = tree.build(style3);
+		assert(true);
+	});
 
 	it('of tree builder for avg. CSS file', function() {
 		cssTree = tree.build(style2);
@@ -35,6 +43,11 @@ describe('Performance', function() {
 
 	it('of CSS Tree', function() {
 		cssTree = tree.build(tokens);
+		assert(true);
+	});
+
+	it('of diff of large sources', function() {
+		diff.diff(style3, style3diff);
 		assert(true);
 	});
 
