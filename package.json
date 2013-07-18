@@ -19,7 +19,9 @@
     "grunt-contrib-watch": "~0.4.3",
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-crx": "~0.2.3",
-    "grunt-markdown": "~0.3.0"
+    "grunt-markdown": "~0.3.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-zip": "~0.9.2"
   },
   "scripts": {
     "test": "make test"
