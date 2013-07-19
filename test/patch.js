@@ -59,6 +59,10 @@ describe('Patcher', function() {
 		assert.equal(applyPatch('a {b:1;}', 'c/d', 'e:2'), 'a {b:1;}\nc {d {e:2;}}');
 	});
 
+	it('should create new sections for empty document', function() {
+		assert.equal(applyPatch('/* demo */\n\n', 'a', 'b:1'), '/* demo */\n\na {\n\tb: 1;\n}');
+	});
+
 	it('should learn coding style', function() {
 		assert.equal(applyPatch('a {\n\tb:1;\n}', 'c', 'd:2'), 'a {\n\tb:1;\n}\nc {\n\td:2;\n}');
 		assert.equal(applyPatch('a\n{\n\tb: 1;\n\t}', 'c', 'd:2'), 'a\n{\n\tb: 1;\n\t}\nc\n{\n\td: 2;\n\t}');
