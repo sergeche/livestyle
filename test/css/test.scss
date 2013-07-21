@@ -1,0 +1,13 @@
+table {
+	th {
+		font-weight: bold;
+	}
+
+	td {
+		color: blue;
+
+		&:hover {
+			color: red;
+		}
+	}
+}
