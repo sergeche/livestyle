@@ -91,7 +91,7 @@ describe('Tree Builder', function() {
 
 		var innerRanges = [
 			[368, 393],
-			[393, 439],
+			[393, 413],
 			[439, 465],
 			[465, 498]
 		];

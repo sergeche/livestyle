@@ -57,10 +57,17 @@ describe('Patcher', function() {
 	it('should create new sections with CSS property', function() {
 		assert.equal(applyPatch('a{b:1;}', 'c', 'd:2'), 'a{b:1;}\nc{d:2;}');
 		assert.equal(applyPatch('a {b:1;}', 'c/d', 'e:2'), 'a {b:1;}\nc {d {e:2;}}');
+		assert.equal(applyPatch('a {b:1;}\n/* comment */', 'c', 'e:2'), 'a {b:1;}\n/* comment */\nc {e:2;}');
 	});
 
 	it('should create new sections for empty document', function() {
 		assert.equal(applyPatch('/* demo */\n\n', 'a', 'b:1'), '/* demo */\n\na {\n\tb: 1;\n}');
+	});
+
+	it('should remove section', function() {
+		var css = 'body {\n\tbackground-color: red;\n}';
+		var p = [{"path":[["body",1]],"action":"remove"}];
+		assert.equal(patch.patch(css, p), '');
 	});
 
 	it('should learn coding style', function() {
