@@ -182,7 +182,12 @@ module.exports = function(grunt) {
 				cwd: './out/webkit/',
 				src: ['./out/webkit/*.*'],
 				dest: grunt.option('webkit-zip') || './out/livestyle-webkit.zip'
-		    },
+			},
+			chrome: {
+				cwd: './out/chrome-ext/',
+				src: ['./out/chrome-ext/*.*'],
+				dest: grunt.option('chrome-zip') || './out/livestyle-chrome.zip'
+			}
 		}
 	});
 
@@ -199,6 +204,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'requirejs:st_src', 'copy:st']);
 	grunt.registerTask('webkit', ['clean:webkit', 'requirejs:worker', 'requirejs:webkit', 'copy:webkit', 'zip:webkit']);
-	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'copy:chrome_ext', 'crx']);
+	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'copy:chrome_ext', 'crx', 'zip:chrome']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
 };
