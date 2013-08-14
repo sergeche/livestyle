@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['chrome', 'webkit', 'st'],
+				tasks: ['chrome', 'webkit'],
 				options: {
 					nospawn: true,
 				}
