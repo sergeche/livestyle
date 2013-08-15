@@ -47,6 +47,7 @@ describe('Patcher', function() {
 		assert.equal(applyPatch('c{b:1;} a{d:1;b:1;}', 'a', 'b:2'), 'c{b:1;} a{d:1;b:2;}');
 		assert.equal(applyPatch('a{b:abc}', 'a', 'b:3'), 'a{b:3}');
 		assert.equal(applyPatch('c{a{b:1}}', 'c/a', 'b:2'), 'c{a{b:2}}');
+		assert.equal(applyPatch('a{b:1;} /* юникод */', 'a', 'b:2'), 'a{b:2;} /* юникод */');
 	});
 
 	it('should find best match and update CSS property', function() {
