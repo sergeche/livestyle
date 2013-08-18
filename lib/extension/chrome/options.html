@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Emmet LiveStyle options</title>
+	<style type="text/css">
+		body {
+			font-family:'Lucida Grande', arial, sans-serif;
+			font-size:12px;
+			color:#000;
+			background:#fff;
+			margin:0;
+			padding:30px;
+			line-height:1.4;
+		}
+		
+		h1 {
+			font-size:25px;
+			font-weight:normal;
+			margin-top:0;
+			margin-bottom:1.5em;
+		}
+		
+		fieldset {
+			border:none;
+			border-bottom:1px solid #ccc;
+			padding:0;
+			margin:0;
+			margin-bottom:15px;
+		}
+		
+		label {
+			display:inline-block;
+			vertical-align:middle;
+			/* width:15em; */
+			margin-right:1em;
+		}
+		
+		input {
+			vertical-align:middle;
+		}
+		
+		input[type=text],
+		input[type=number] {
+			padding:3px;
+		}
+		
+		.row {
+			margin-bottom:2em;
+		}
+		
+		.comment {
+			display:block;
+			color:#aaa;
+			font-size:10px;
+			margin-top:0.5em;
+		}
+		
+		input[name=port] {
+			width:5em;
+		}
+		
+		input[type=submit] {
+			font-size:20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Emmet LiveStyle options</h1>
+	<form action="">
+		<fieldset>
+			<div class="row">
+				<label for="fld-port">Websockets port</label>
+				<input type="number" name="port" id="fld-port" min="1" required="required" />
+			</div>
+			<div class="row">
+				<input type="checkbox" name="apply_unsaved" id="fld-apply_unsaved" value="1" />
+				<label for="fld-apply_unsaved">Apply unsaved changes on page load</label>
+				<span class="comment">With this option enabled, all <em>unsaved</em> changes in associated editor files will be automatically applied when page is reloaded. Note: DevTools must remain opened in order to make this feature work.</span>
+			</div>
+		</fieldset>
+		<div class="row">
+			<input type="submit" value="Save" />
+		</div>
+	</form>
+	
+	<script src="require.js" data-main="options.js"></script>
+</body>
+</html>

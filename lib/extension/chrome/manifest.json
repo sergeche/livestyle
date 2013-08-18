@@ -4,6 +4,7 @@
 	"description": "Live bi-directional CSS editing of new generation",
 
 	"devtools_page": "devtools.html",
+	"options_page": "options.html",
 	"background": {
 		"page": "background.html"
 	},
