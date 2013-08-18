@@ -158,6 +158,10 @@ module.exports = function(grunt) {
 			chrome_background: rjsConfig({
 				out: './out/chrome-ext/background.js',
 				include: ['extension/chrome/background']
+			}),
+			chrome_options: rjsConfig({
+				out: './out/chrome-ext/options.js',
+				include: ['extension/chrome/options']
 			})
 		},
 		markdown: {
@@ -205,6 +209,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome']);
 	grunt.registerTask('st', ['requirejs:st', 'requirejs:st_src', 'copy:st']);
 	grunt.registerTask('webkit', ['clean:webkit', 'requirejs:worker', 'requirejs:webkit', 'copy:webkit', 'zip:webkit']);
-	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'copy:chrome_ext', 'crx', 'zip:chrome']);
+	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'requirejs:chrome_options', 'copy:chrome_ext', 'crx', 'zip:chrome']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
 };

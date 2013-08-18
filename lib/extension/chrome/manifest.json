@@ -1,6 +1,6 @@
 {
 	"name": "Emmet LiveStyle",
-	"version": "0.8.0",
+	"version": "0.8.1",
 	"description": "Live bi-directional CSS editing of new generation",
 
 	"devtools_page": "devtools.html",
