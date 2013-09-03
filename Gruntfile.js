@@ -113,6 +113,14 @@ module.exports = function(grunt) {
 					})
 				]
 			},
+			webkit_app: {
+				files: [
+					fc({
+						src: ['./out/webkit/*.*'],
+						dest: '/Applications/WebKit.app/Contents/Frameworks/10.8/WebInspectorUI.framework/Resources/livestyle'
+					})
+				]
+			},
 			readme: {
 				files: [
 					fc({
@@ -128,7 +136,14 @@ module.exports = function(grunt) {
 				files: './lib/**/*.*',
 				tasks: ['chrome', 'webkit'],
 				options: {
-					nospawn: true,
+					nospawn: false,
+				}
+			},
+			webkit: {
+				files: './lib/**/*.*',
+				tasks: ['webkit', 'copy:webkit_app'],
+				options: {
+					nospawn: false,
 				}
 			}
 		},
