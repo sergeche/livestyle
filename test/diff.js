@@ -1,22 +1,13 @@
-var rjs = require('requirejs');
+var _ = require('lodash');
 var assert = require('assert');
 var path = require('path');
 var fs = require('fs');
-
-rjs.config({
-	baseUrl: path.resolve(__dirname, '../lib'),
-	paths: {
-		lodash: 'vendor/lodash'
-	}
-});
+var diff = require('../lib/diff');
+var locator = require('../lib/locator');
 
 function readCSS(cssPath) {
 	return fs.readFileSync(path.join(__dirname, cssPath), 'utf8');
 }
-
-var diff = rjs('diff');
-var locator = rjs('locator');
-var _ = rjs('lodash');
 
 describe('Diff', function() {
 	var style1 = readCSS('css/diff1.css');

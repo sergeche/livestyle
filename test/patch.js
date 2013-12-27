@@ -1,16 +1,7 @@
-var rjs = require('requirejs');
 var assert = require('assert');
 var path = require('path');
-
-rjs.config({
-	baseUrl: path.resolve(__dirname, '../lib'),
-	paths: {
-		lodash: 'vendor/lodash'
-	}
-});
-
-var patch = rjs('patch');
-var diff = rjs('diff');
+var patch = require('../lib/patch');
+var diff = require('../lib/diff');
 
 /**
  * Locates node by given path in CSS source and 

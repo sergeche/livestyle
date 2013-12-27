@@ -1,19 +1,10 @@
 var fs = require('fs');
-var rjs = require('requirejs');
 var path = require('path');
 var assert = require('assert');
-
-rjs.config({
-	baseUrl: path.resolve(__dirname, '../lib'),
-	paths: {
-		lodash: 'vendor/lodash'
-	}
-});
-
-var patch = rjs('patch');
-var diff = rjs('diff');
-var tree = rjs('tree');
-var cssParser = rjs('cssParser');
+var patch = require('../lib/patch');
+var diff = require('../lib/diff');
+var tree = require('../lib/tree');
+var cssParser = require('emmet/lib/parser/css');
 
 function readCSS(cssPath) {
 	return fs.readFileSync(path.join(__dirname, cssPath), 'utf8');

@@ -1,6 +1,6 @@
 {
   "name": "LiveStyle",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "private": true,
   "description": "Bi-directional live CSS edit",
   "repository": {
@@ -28,6 +28,7 @@
     "test": "make test"
   },
   "dependencies": {
-    "requirejs": "~2.1.5"
+    "emmet": "git://github.com/emmetio/emmet.git#pp",
+    "lodash": "~2.4.1"
   }
 }
