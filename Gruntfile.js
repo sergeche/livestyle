@@ -7,7 +7,8 @@ module.exports = function(grunt) {
 			chrome: 'extension/chrome',
 			webkit: 'extension/webkit',
 			lodash: 'vendor/lodash',
-			emSelect: 'vendor/emSelect/emSelect'
+			emSelect: 'vendor/emSelect/emSelect',
+			emmet: '../node_modules/emmet',
 		},
 		optimize: isProduction ? 'uglify2' : 'none',
 		name: 'backend/almond',
@@ -32,18 +33,6 @@ module.exports = function(grunt) {
 		return {options: merge({}, rjsOpt, opt)};
 	}
 
-	function sublimeConfig(outName) {
-		return rjsConfig({
-			out: './out/sublimetext/' + outName,
-			include: ['backend/sublimetext'],
-			optimize: ~outName.indexOf('-src') ? 'none' : 'uglify2',
-			wrap: {
-				start: '(function(root, factory){root.livestyle = factory();}(this, function () {',
-				end: 'return require(\'backend/sublimetext\');}));'
-			}
-		});
-	}
-
 	function pad(num) {
 		return (num < 10 ? '0' : '') + num;
 	}
@@ -62,14 +51,34 @@ module.exports = function(grunt) {
 			chrome: {
 				files: [
 					fc({
-						src: ['./lib/*.js', './lib/extension/*.js', './lib/extension/chrome/*.*', './out/worker.js'], 
+						src: ['./lib/extension/*.js', './lib/extension/chrome/*.*', './out/worker.js'], 
 						dest: './out/chrome/'
 					}),
 					fc({
 						src: ['./lib/vendor/**/*.{js,css}'], 
 						dest: './out/chrome/vendor'
+					}),
+					fc({
+						src: ['**/*.js'], 
+						dest: './out/chrome/emmet',
+						expand: true,
+						flatten: false,
+						cwd: './node_modules/emmet/lib'
 					})
 				]
+			},
+			chrome_base: {
+				files: [
+					fc({
+						src: ['./lib/*.js'], 
+						dest: './out/chrome/'
+					})
+				],
+				options: {
+					processContent: function(content, srcPath) {
+						return content.replace(/\.\.\/node_modules\/emmet\/lib/g, 'emmet');
+					}
+				}
 			},
 			chrome_ext: {
 				files: [
@@ -97,14 +106,6 @@ module.exports = function(grunt) {
 				}
 			},
 			
-			st: {
-				files: [
-					fc({
-						src: ['./out/sublimetext/{livestyle,livestyle-src}.js', './lib/vendor/emmet.js'], 
-						dest: '/Users/Sergey/Library/Application Support/Sublime Text 2/Packages/LiveStyle/'
-					})
-				]
-			},
 			webkit: {
 				files: [
 					fc({
@@ -134,7 +135,7 @@ module.exports = function(grunt) {
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['chrome', 'webkit'],
+				tasks: ['chrome', 'webkit', 'notify:watch'],
 				options: {
 					nospawn: false,
 				}
@@ -148,8 +149,6 @@ module.exports = function(grunt) {
 			}
 		},
 		requirejs: {
-			st: sublimeConfig('livestyle.js'),
-			st_src: sublimeConfig('livestyle-src.js'),
 			webkit: rjsConfig({
 				out: './out/webkit/livestyle.js',
 				include: ['extension/webkit/livestyle'],
@@ -160,7 +159,7 @@ module.exports = function(grunt) {
 			}),
 			worker: rjsConfig({
 				out: './out/worker.js',
-				include: ['vendor/emmet', 'extension/worker']
+				include: ['extension/worker']
 			}),
 			chrome_devtools: rjsConfig({
 				out: './out/chrome-ext/devtools.js',
@@ -207,6 +206,14 @@ module.exports = function(grunt) {
 				src: ['./out/chrome-ext/*.*'],
 				dest: grunt.option('chrome-zip') || './out/livestyle-chrome.zip'
 			}
+		},
+		notify: {
+			watch: {
+				options: {
+					title:  'Emmet LiveStyle',
+					message: 'Watch compile complete'
+				}
+			}
 		}
 	});
 
@@ -221,8 +228,7 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
-	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome']);
-	grunt.registerTask('st', ['requirejs:st', 'requirejs:st_src', 'copy:st']);
+	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome_base', 'copy:chrome']);
 	grunt.registerTask('webkit', ['clean:webkit', 'requirejs:worker', 'requirejs:webkit', 'copy:webkit', 'zip:webkit']);
 	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'requirejs:chrome_options', 'copy:chrome_ext', 'crx', 'zip:chrome']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
