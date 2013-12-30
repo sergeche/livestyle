@@ -14,6 +14,9 @@ describe('Locator', function() {
 	var cssTree1 = tree.build(style1);
 	var cssTree2 = tree.build(style2);
 
+	var less1 = readCSS('less/normalize.less');
+	var lessTree1 = tree.build(less1);
+
 	it('should parse CSS path', function() {
 		assert.deepEqual(locator.parsePath('a/b'), [['a', 1], ['b', 1]]);
 		assert.deepEqual(locator.parsePath('a|2/b'), [['a', 2], ['b', 1]]);
@@ -23,10 +26,10 @@ describe('Locator', function() {
 	});
 
 	it('should find node', function() {
-		var node = locator.locate(cssTree1, '@media print/body|2/padding');
-		assert(node, 'Node located');
-		assert.equal(node.name(), 'padding', 'Located node has valid name');
-		assert.equal(locator.createPath(node, true), '@media print/body|2/padding', 'Path are equal');
+		var node = locator.locate(cssTree1, '@media print/body|2');
+		assert(node);
+		assert.equal(node.name(), 'body', 'Located node has valid name');
+		assert.equal(locator.pathForNode(node, true), '@media print/body|2', 'Path are equal');
 	});
 
 	it('should find node by position', function() {
@@ -54,5 +57,18 @@ describe('Locator', function() {
 			'@media all and (min-height: 300px)/body/font-size');
 		assert.equal(loc.node.name(), 'body');
 		assert.deepEqual(loc.rest, [['font-size', 1]]);
+	});
+
+	it('should correctly parse LESS tree', function() {
+		// we have to check the normalization process,
+		// e.g. how LESS selectors are transformed to
+		// internal paths
+		
+		var expected = ['.one', '.one/.two', '.one|2', '.one|2/.two', '.three', '.four', '.three|2', '.one|3'];
+		var list = locator.toList(lessTree1, {skipPathPos: false}).map(function(item) {
+			return item.pathString;
+		});
+
+		assert.deepEqual(list, expected);
 	});
 });
