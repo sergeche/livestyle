@@ -20,13 +20,15 @@ function applyPatch(content, path, value) {
 		};
 	}
 
+	// console.log('before:', content);
+
 	content = patch.patch(content, {
 		path: path,
 		properties: value instanceof Array ? value : [value],
 		removed: []
 	});
 
-	// console.log(content);
+	// console.log('after:', content);
 	return content;
 }
 
@@ -49,7 +51,7 @@ describe('Patcher', function() {
 	it('should create new sections with CSS property', function() {
 		assert.equal(applyPatch('a{b:1;}', 'c', 'd:2'), 'a{b:1;}\nc{d:2;}');
 		assert.equal(applyPatch('a {b:1;}', 'c/d', 'e:2'), 'a {b:1;}\nc {d {e:2;}}');
-		assert.equal(applyPatch('a {b:1;}\n/* comment */', 'c', 'e:2'), 'a {b:1;}\n/* comment */\nc {e:2;}');
+		assert.equal(applyPatch('a {b:1;}\n/* comment */', 'c', 'e:2'), 'a {b:1;}\nc {e:2;}\n/* comment */');
 	});
 
 	it('should create new sections for empty document', function() {

@@ -33,7 +33,7 @@ describe('Performance', function() {
 	});
 
 	it('of CSS Tree', function() {
-		cssTree = tree.build(tokens);
+		cssTree = tree.build(style1);
 		assert(true);
 	});
 

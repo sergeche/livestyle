@@ -57,49 +57,6 @@ describe('Tree Builder', function() {
 		assert.equal(node.children[0].value(), '10px');
 	});
 
-	it('should store proper source tokens', function() {
-		var cssTree = tree.build(style3);
-		var topSectionRanges = [
-			[0, 17],
-			[18, 42],
-			[44, 91],
-			[91, 111],
-			[111, 155],
-			[155, 233],
-			[233, 292],
-			[292, 322],
-			[322, 349],
-			[349, 501],
-			[501, 553],
-			[553, 720]
-		];
-
-		var valueRanges = [
-			[170, 180],
-			[182, 198],
-			[200, 230]
-		];
-
-		var innerRanges = [
-			[368, 393],
-			[393, 413],
-			[439, 465],
-			[465, 498]
-		];
-
-		cssTree.children.forEach(function(child, i) {
-			assert.deepEqual(child.fullRange().toArray(), topSectionRanges[i]);
-		});
-
-		cssTree.children[5].children.forEach(function(child, i) {
-			assert.deepEqual(child.fullRange().toArray(), valueRanges[i]);
-		});
-
-		cssTree.children[9].children.forEach(function(child, i) {
-			assert.deepEqual(child.fullRange().toArray(), innerRanges[i]);
-		});
-	});
-
 	it('should properly modify tree when removing nodes', function() {
 		var cssTree = tree.build(style1);
 		var section = cssTree.children[1];
@@ -107,9 +64,9 @@ describe('Tree Builder', function() {
 
 		var sections = [
 			['@import', [0, 7]],
-			['.btn:hover', [65, 76]],
-			['@media print', [138, 151]],
-			['@media all and (min-height: 300px)', [242, 277]],
+			['.btn:hover', [65, 75]],
+			['@media print', [138, 150]],
+			['@media all and (min-height: 300px)', [242, 276]],
 			['ul', [453, 455]]
 		];
 
@@ -143,10 +100,10 @@ describe('Tree Builder', function() {
 
 		var topSections = [
 			['@import', [0, 7]],
-			['div, blockquote', [65, 129]],
-			['.btn:hover', [164, 175]],
-			['@media print', [237, 250]],
-			['@media all and (min-height: 300px)', [376, 411]],
+			['div, blockquote', [65, 104]],
+			['.btn:hover', [164, 174]],
+			['@media print', [237, 249]],
+			['@media all and (min-height: 300px)', [376, 410]],
 			['ul', [587, 589]]
 		];
 
@@ -157,9 +114,9 @@ describe('Tree Builder', function() {
 
 		var childSections = [
 			['@import', [254, 261]],
-			['blockquote', [282, 293]],
-			['BODY', [317, 322]],
-			['body', [344, 349]]
+			['blockquote', [282, 292]],
+			['BODY', [317, 321]],
+			['body', [344, 348]]
 		];
 		child.children.forEach(function(item, i) {
 			assert.equal(item.name(), childSections[i][0]);
