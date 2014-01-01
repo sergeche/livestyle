@@ -25,7 +25,6 @@ describe('LESS', function() {
 
 	it('should diff two LESS sources', function() {
 		var d = diff.diff(less1, less2, {syntax: 'less'});
-		console.log(d);
 		assert.equal(d.length, 1);
 		assert.deepEqual(d[0].path, [['table td', 1]]);
 
