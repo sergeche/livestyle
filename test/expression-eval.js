@@ -1,9 +1,10 @@
 var assert = require('assert');
-var expr = require('../lib/vendor/expression-eval.js');
+var expr = require('../lib/expression.js');
+var exprEvaluator = require('../lib/vendor/expression-eval.js');
 
 describe('Expression evaluator', function() {
 	var e = function(expression, vars) {
-		return expr.evaluate(expression, vars);
+		return expr.eval(expression, vars);
 	};
 
 	it('should eval simple expression', function() {
@@ -37,6 +38,12 @@ describe('Expression evaluator', function() {
 		assert.equal(e('3 + @border-color', {
 			'@border-color': '#111'
 		}), '#141414');
+	});
+
+	it('should split expression', function() {
+		assert.equal(e('1 1'), '1 1');
+		assert.equal(e('1px + 2 1 + 4px'), '3px 5px');
+		assert.equal(e('1px + 2 (1 + 4px + (3*5) ) 8em'), '3px 20px 8em');
 	});
 
 	it('should work with custom functions', function() {
@@ -111,8 +118,8 @@ describe('Expression evaluator', function() {
 
 		assert.equal(e('#111 + lighten(#333, 10%)', {
 			lighten: function (color, amount) {
-				color = expr.evalArg(color);
-				amount = expr.evalArg(amount);
+				color = exprEvaluator.evalArg(color);
+				amount = exprEvaluator.evalArg(amount);
 				var hsl = toHSL(color.value);
 
 				hsl.l = clamp(hsl.l + amount.value / 100);
