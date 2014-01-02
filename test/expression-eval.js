@@ -109,17 +109,15 @@ describe('Expression evaluator', function() {
 
 		assert.equal(e('1 + a(b(2))', {
 			a: function(num) {
-				return num + 2;
+				return num.value + 2;
 			},
 			b: function(num) {
-				return num * 3;
+				return num.value * 3;
 			}
 		}), 9);
 
 		assert.equal(e('#111 + lighten(#333, 10%)', {
 			lighten: function (color, amount) {
-				color = exprEvaluator.evalArg(color);
-				amount = exprEvaluator.evalArg(amount);
 				var hsl = toHSL(color.value);
 
 				hsl.l = clamp(hsl.l + amount.value / 100);
