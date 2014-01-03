@@ -56,5 +56,26 @@ describe('LESS functions:', function() {
 
 	it('color components', function() {
 		assert.equal(e('hue(hsl(98, 12%, 95%))'), '98');
+		assert.equal(e('saturation(hsl(98, 12%, 95%))'), '12%');
+		assert.equal(e('lightness(hsl(98, 12%, 95%))'), '95%');
+		assert.equal(e('hsvhue(hsv(98, 12%, 95%))'), '98');
+		assert.equal(e('hsvsaturation(hsv(98, 12%, 95%))'), '12%');
+		assert.equal(e('hsvvalue(hsv(98, 12%, 95%))'), '95%');
+		assert.equal(e('red(#f00)'), '255');
+		assert.equal(e('green(#0f0)'), '255');
+		assert.equal(e('blue(#00f)'), '255');
+
+		assert.equal(e('alpha(rgba(3, 4, 5, 0.5))'), '0.5');
+		assert.equal(e('alpha(transparent)'), '0');
+
+		assert.equal(e('luma(#fff)'), '100%');
+		assert.equal(e('luma(#000)'), '0%');
+		assert.equal(e('luma(rgba(0,0,0,0.5))'), '0%');
+		assert.equal(e('luma(#ff0000)'), '21%');
+		assert.equal(e('luma(#00ff00)'), '72%');
+		assert.equal(e('luma(#0000ff)'), '7%');
+		assert.equal(e('luma(#ffff00)'), '93%');
+		assert.equal(e('luma(#00ffff)'), '79%');
+		assert.equal(e('luma(rgba(255,255,255,0.5))'), '50%');
 	});
 });
