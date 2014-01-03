@@ -49,8 +49,12 @@ describe('LESS functions:', function() {
 		assert.equal(e('argb(#fff)'), '#ffffffff');
 		assert.equal(e('argb(rgba(1, 2, 3, .4))'), '#66010203');
 		assert.equal(e('hsl(380, 150%, 150%)'), '#ffffff');
-		assert.equal(e('hsla(25, 50%, 50%, 0.6)'), 'rgba(191, 116, 64, 0.6)');
-		assert.equal(e('hsv(5, 50%, 30%)'), '#4c2926');
-		assert.equal(e('hsva(3, 50%, 30%, 0.2)'), 'rgba(76, 40, 38, 0.2)');
+		assert.equal(e('hsla(25, 50%, 50%, 0.6)'), 'rgba(191, 117, 64, 0.6)');
+		assert.equal(e('hsv(5, 50%, 30%)'), '#4d2926');
+		assert.equal(e('hsva(3, 50%, 30%, 0.2)'), 'rgba(77, 40, 38, 0.2)');
+	});
+
+	it('color components', function() {
+		assert.equal(e('hue(hsl(98, 12%, 95%))'), '98');
 	});
 });
