@@ -1,3 +1,7 @@
+#functions {
+  background: linear-gradient(#000, #fff);
+}
+
 #built-in {
   escaped: -Some::weird(#thing, y);
   lighten: #ffcccc;
