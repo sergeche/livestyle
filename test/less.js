@@ -11,13 +11,13 @@ function readCSS(cssPath) {
 }
 
 describe('LESS', function() {
-	var less1 = 'table { th {font-weight: bold;} td {font-size: 12px;} }';
-	var less2 = 'table { th {font-weight: bold;} td {font-size: 12px + 8;} }';
+	var less1 = 'table { th {font-weight: bold;} td {@v: 12px; a: @v;} }';
+	var less2 = 'table { th {font-weight: bold;} td {@v: 12px; a: @v + 2;} }';
 
 	var less3 = '.section{ a{color:red; &:hover{color:blue;}} }';
 	var less4 = '.section{ a{color:red; &:hover{color:green;}} }';
 
-	var css1 = 'table td {font-size: 12px;}';
+	var css1 = 'table td {a: 12px;}';
 	var css2 = 'table td {padding: 10px}';
 
 	var css3 = '.section a{color:red} .section a:hover{color:blue}';
@@ -33,7 +33,24 @@ describe('LESS', function() {
 		assert.deepEqual(d[0].path, [['.section a:hover', 1]]);
 	});
 
-	it('should apply CSS patch to LESS source', function() {
-		var d = diff.diff(css1, css2);
+	it('should patch simple LESS expressions', function() {
+		var less1 = '@v:12px; @c:#fc0; a {b: @v; c: @c; d: @v; e: 10px;}';
+		var css1 = 'a {b: 14px; c: #fa0; d: 3em; e: 12px;}';
+
+		var d = diff.diff(less1, css1, {syntax: 'less'});
+
+		var patchedSource = patch.patch(less1, d, {syntax: 'less'});
+		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2px; c: @c - #002200; d: 3em; e: 12px;}');
+	});
+
+	it.only('should patch basic LESS expressions', function() {
+		var less1 = '@v:12px; @c:#fc0; a {b: @v + 2 / 1; /* c: lighten(#fc0, 10%); d: lighten(@c, 10%); */}';
+		var css1 = 'a {b: 16px; /* c: #ffe066; d: #ffe066; */}';
+
+		var d = diff.diff(less1, css1, {syntax: 'less'});
+
+		var patchedSource = patch.patch(less1, d, {syntax: 'less'});
+		console.log(patchedSource);
+		// assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2px; c: @c - #002200; d: 3em;}');
 	});
 });
