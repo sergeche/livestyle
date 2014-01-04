@@ -46,6 +46,29 @@ describe('Expression evaluator', function() {
 		assert.equal(e('1px + 2 (1 + 4px + (3*5) ) 8em'), '3px 20px 8em');
 	});
 
+	it('should find safe token', function() {
+		var ctx = {a: 10, b: 11, c: 12};
+		var t = function(expr) {
+			var pe = exprEvaluator.parse(expr, ctx);
+			var safeToken = pe.safeToken();
+			if (safeToken) {
+				return (safeToken.op ? safeToken.op.index_ : '') + safeToken.value.number_;
+			}
+		};
+		
+		assert.equal(t('1 + 2'), '+2');
+		assert.equal(t('1 + 2 - 3'), '-3');
+		assert.equal(t('1 + 2 - a'), '+2');
+		assert.equal(t('1 - a'), '1');
+		assert.equal(t('(1 - a) + 2'), '+2');
+		assert.equal(t('(1 - a) + b'), '1');
+		assert.equal(t('(1 - a) / b'), undefined);
+		assert.equal(t('c(1 - a)'), undefined);
+		assert.equal(t('c(1 - a) + 2'), '+2');
+		assert.equal(t('c(1 - a) + 2 - b(3)'), '+2');
+		assert.equal(t('c(1 - a) + 2 - b(3/2)'), '+2');
+	});
+
 	it('should work with custom functions', function() {
 		// will use a real-life LESS function to test
 		var toHSL = function (color) {
