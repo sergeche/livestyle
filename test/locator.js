@@ -17,6 +17,14 @@ describe('Locator', function() {
 	var less1 = readCSS('less/normalize.less');
 	var lessTree1 = tree.build(less1);
 
+	// it.only('should correctly convert tre to list', function() {
+	// 	var lessTree2 = tree.build('table { th {font-weight: bold;} td {font-size: 12px;} }');
+	// 	var list = locator.toList(lessTree2, {syntax: 'less'});
+	// 	console.log(list.map(function(item) {
+	// 		return item.pathString + ' (' + item.section.type + ')';
+	// 	}));
+	// });
+
 	it('should parse CSS path', function() {
 		assert.deepEqual(locator.parsePath('a/b'), [['a', 1], ['b', 1]]);
 		assert.deepEqual(locator.parsePath('a|2/b'), [['a', 2], ['b', 1]]);

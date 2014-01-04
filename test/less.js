@@ -12,7 +12,7 @@ function readCSS(cssPath) {
 
 describe('LESS', function() {
 	var less1 = 'table { th {font-weight: bold;} td {font-size: 12px;} }';
-	var less2 = 'table { th {font-weight: bold;} td {font-size: 20px;} }';
+	var less2 = 'table { th {font-weight: bold;} td {font-size: 12px + 8;} }';
 
 	var less3 = '.section{ a{color:red; &:hover{color:blue;}} }';
 	var less4 = '.section{ a{color:red; &:hover{color:green;}} }';
