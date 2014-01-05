@@ -46,20 +46,29 @@ describe('Expression evaluator', function() {
 		assert.equal(e('1px + 2 (1 + 4px + (3*5) ) 8em'), '3px 20px 8em');
 	});
 
-	it('should find safe token', function() {
+	it.only('should find safe token', function() {
 		var ctx = {a: 10, b: 11, c: 12};
 		var t = function(expr) {
 			var pe = exprEvaluator.parse(expr, ctx);
 			var safeToken = pe.safeToken();
 			if (safeToken) {
-				return (safeToken.op ? safeToken.op.index_ : '') + safeToken.value.number_;
+				return (safeToken.side == 'right' ? safeToken.op.index_ : '') + safeToken.value.valueOf();
 			}
 		};
+
+		var v = function(expr) {
+			return exprEvaluator.parse(expr, ctx).safeTokenValue();
+		};
+
+		assert.equal(t('1'), '1');
+		assert.equal(t('-1'), '-1');
+		assert.equal(t('#fc0'), '#ffcc00');
 		
 		assert.equal(t('1 + 2'), '+2');
 		assert.equal(t('1 + 2 - 3'), '-3');
 		assert.equal(t('1 + 2 - a'), '+2');
 		assert.equal(t('1 - a'), '1');
+		assert.equal(t('-1 - a'), '-1');
 		assert.equal(t('(1 - a) + 2'), '+2');
 		assert.equal(t('(1 - a) + b'), '1');
 		assert.equal(t('(1 - a) / b'), undefined);
@@ -67,6 +76,55 @@ describe('Expression evaluator', function() {
 		assert.equal(t('c(1 - a) + 2'), '+2');
 		assert.equal(t('c(1 - a) + 2 - b(3)'), '+2');
 		assert.equal(t('c(1 - a) + 2 - b(3/2)'), '+2');
+		assert.equal(t('#fff + a'), '#ffffff');
+
+		// test numeric value
+		assert.equal(v('1 + 2'), 2);
+		assert.equal(v('1 + 2 - 3'), -3);
+		assert.equal(v('1 - a'), 1);
+		assert.equal(v('-1 - a'), -1);
+		assert.equal(v('#000'), 0);
+		assert.equal(v('#010'), parseInt('11', 16) << 8);
+	});
+
+	it('should modify safe token', function() {
+		var ctx = {a: 10, b: 11, c: 12};
+		var r = function(expr, replacement) {
+			var out = exprEvaluator.parse(expr, ctx).replaceSafeToken(replacement);
+			return out;
+		};
+
+		// single value
+		assert.equal(r('1px', '2px'), '2px');
+		assert.equal(r('-1px', '2px'), '2px');
+		assert.equal(r('#fc0', 'red'), 'red');
+
+		// unknown token, can’t be safe
+		assert.equal(r('foo', 'red'), null);
+		
+		assert.equal(r('1 + 2', '3'), '1 + 3');
+		assert.equal(r('1 + 2 - 3', '-4'), '1 + 2 - 4');
+		assert.equal(r('1 + 2 - a', '10'), '1 + 10 - a');
+		assert.equal(r('1 - a', '5'), '5 - a');
+		assert.equal(r('(1 - a) + 2', '100'), '(1 - a) + 100');
+		assert.equal(r('(1 - a) + b', '200'), '(200 - a) + b');
+		assert.equal(r('c(1 - a) + 2', '3'), 'c(1 - a) + 3');
+		assert.equal(r('c(1 - a) + 2 - b(3)', '4'), 'c(1 - a) + 4 - b(3)');
+		assert.equal(r('c(1 - a) + 2 - b(3/2)', '5'), 'c(1 - a) + 5 - b(3/2)');
+
+		// work with sign change
+		assert.equal(r('1 + 2', '-2'), '1 - 2');
+		assert.equal(r('1 - 2', '3'), '1 + 3');
+		assert.equal(r('1 - a', '3'), '3 - a');
+		assert.equal(r('1 - a', '-3'), '-3 - a');
+		assert.equal(r('1 + a', '-3'), '-3 + a');
+		assert.equal(r('-1 + a', '-3'), '-3 + a');
+		assert.equal(r('-1 + a', '3'), '3 + a');
+
+		// work with colors
+		assert.equal(r('#fff + a', '#bc3'), '#bc3 + a');
+		assert.equal(r('a + #fff', '#bc3'), 'a + #bc3');
+		assert.equal(r('a + #fff', '-#bc3'), 'a - #bc3');
 	});
 
 	it('should work with custom functions', function() {
