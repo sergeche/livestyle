@@ -5,9 +5,11 @@ var tree = require('../lib/tree');
 var diff = require('../lib/diff');
 var patch = require('../lib/patch');
 var locator = require('../lib/locator');
+var cssParser = require('emmet/lib/parser/css');
+var lessCtx = require('../lib/less/context');
 
-function readCSS(cssPath) {
-	return fs.readFileSync(path.join(__dirname, cssPath), 'utf8');
+function readFile(filePath) {
+	return fs.readFileSync(path.join(__dirname, filePath), 'utf8');
 }
 
 describe('LESS', function() {
@@ -52,5 +54,28 @@ describe('LESS', function() {
 		var patchedSource = patch.patch(less1, d, {syntax: 'less'});
 		// console.log(patchedSource);
 		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2 / 1 + 2px; c: @c + #001466; d: lighten(@c, 10%) + #000a33; }');
+	});
+
+	it('should evaluate expression in tree context', function() {
+		var input = readFile('less/input.less');
+		var output = readFile('less/output.css');
+
+		var inTree = tree.build(input);
+		var outTree = tree.build(output);
+
+		inTree.children.forEach(function(item) {
+			if (item.type == 'section') {
+				var sectionName = item.name();
+				item.properties().forEach(function(prop) {
+					if (prop.name.charAt(0) == '@') return;
+
+					var prefix = sectionName + '/' + prop.name + ': ';
+					var expectedValue = outTree.get(sectionName).get(prop.name).value();
+
+					var val = lessCtx.eval(prop.node);
+					assert.equal(prefix + val, prefix + expectedValue);
+				});
+			}
+		});
 	});
 });
