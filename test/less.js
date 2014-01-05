@@ -43,14 +43,14 @@ describe('LESS', function() {
 		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2px; c: @c - #002200; d: 3em; e: 12px;}');
 	});
 
-	it.only('should patch basic LESS expressions', function() {
-		var less1 = '@v:12px; @c:#fc0; a {b: @v + 2 / 1; /* c: lighten(#fc0, 10%); d: lighten(@c, 10%); */}';
-		var css1 = 'a {b: 16px; /* c: #ffe066; d: #ffe066; */}';
+	it('should patch basic LESS expressions', function() {
+		var less1 = '@v:12px; @c:#fc0; a {b: @v + 2 / 1; c: @c; d: lighten(@c, 10%); }';
+		var css1 = 'a {b: 16px; c: #ffe066; d: #ffe066; }';
 
 		var d = diff.diff(less1, css1, {syntax: 'less'});
 
 		var patchedSource = patch.patch(less1, d, {syntax: 'less'});
-		console.log(patchedSource);
-		// assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2px; c: @c - #002200; d: 3em;}');
+		// console.log(patchedSource);
+		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2 / 1 + 2px; c: @c + #001466; d: lighten(@c, 10%) + #000a33; }');
 	});
 });

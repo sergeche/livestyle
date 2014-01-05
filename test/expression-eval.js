@@ -46,7 +46,7 @@ describe('Expression evaluator', function() {
 		assert.equal(e('1px + 2 (1 + 4px + (3*5) ) 8em'), '3px 20px 8em');
 	});
 
-	it.only('should find safe token', function() {
+	it('should find safe token', function() {
 		var ctx = {a: 10, b: 11, c: 12};
 		var t = function(expr) {
 			var pe = exprEvaluator.parse(expr, ctx);
@@ -111,6 +111,7 @@ describe('Expression evaluator', function() {
 		assert.equal(r('c(1 - a) + 2', '3'), 'c(1 - a) + 3');
 		assert.equal(r('c(1 - a) + 2 - b(3)', '4'), 'c(1 - a) + 4 - b(3)');
 		assert.equal(r('c(1 - a) + 2 - b(3/2)', '5'), 'c(1 - a) + 5 - b(3/2)');
+		assert.equal(r('c(1 - a) + 2 - b(3/2, 8)', '5'), 'c(1 - a) + 5 - b(3/2, 8)');
 
 		// work with sign change
 		assert.equal(r('1 + 2', '-2'), '1 - 2');
@@ -120,6 +121,14 @@ describe('Expression evaluator', function() {
 		assert.equal(r('1 + a', '-3'), '-3 + a');
 		assert.equal(r('-1 + a', '-3'), '-3 + a');
 		assert.equal(r('-1 + a', '3'), '3 + a');
+
+		// replace with zero
+		assert.equal(r('1 + 2', '0'), '1');
+		assert.equal(r('1 - 2', '0'), '1');
+		assert.equal(r('a + 2', '0'), 'a');
+		assert.equal(r('1 + a', '0'), 'a');
+		assert.equal(r('-1 + a', '0'), 'a');
+		assert.equal(r('-1 - a', '0'), '-a');
 
 		// work with colors
 		assert.equal(r('#fff + a', '#bc3'), '#bc3 + a');
