@@ -72,8 +72,8 @@ describe('Locator', function() {
 		// e.g. how LESS selectors are transformed to
 		// internal paths
 		
-		var expected = ['.one', '.one/.two', '.one|2', '.one|2/.two', '.three', '.four', '.three|2', '.one|3'];
-		var list = locator.toList(lessTree1, {skipPathPos: false}).map(function(item) {
+		var expected = ['.one', '.one .two', '.one|2', '.one .two|2', '.three', '.four', '.three|2', '.one|3', '.sample', '.sample .test'];
+		var list = locator.toList(lessTree1, {skipPathPos: false, syntax: 'less'}).map(function(item) {
 			return item.pathString;
 		});
 
