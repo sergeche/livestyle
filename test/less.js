@@ -66,13 +66,18 @@ describe('LESS', function() {
 		inTree.children.forEach(function(item) {
 			if (item.type == 'section') {
 				var sectionName = item.name();
+				var ctx = null;
 				item.properties().forEach(function(prop) {
 					if (prop.name.charAt(0) == '@') return;
 
 					var prefix = sectionName + '/' + prop.name + ': ';
 					var expectedValue = outTree.get(sectionName).get(prop.name).value();
 
-					var val = lessCtx.eval(prop.node);
+					if (!ctx) {
+						ctx = lessCtx.context(prop.node);
+					}
+
+					var val = lessCtx.eval(prop.node, ctx);
 					assert.equal(prefix + val, prefix + expectedValue);
 				});
 			}

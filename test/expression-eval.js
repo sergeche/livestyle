@@ -1,10 +1,12 @@
 var assert = require('assert');
-var expr = require('../lib/expression.js');
-var exprEvaluator = require('../lib/vendor/expression-eval.js');
+var expr = require('../lib/expression');
+var exprEvaluator = require('../lib/vendor/expression-eval');
 
 describe('Expression evaluator', function() {
 	var e = function(expression, vars) {
-		return expr.eval(expression, vars);
+		var result = expr.eval(expression, vars);
+		// console.log(result);
+		return result;
 	};
 
 	it('should eval simple expression', function() {
@@ -25,19 +27,23 @@ describe('Expression evaluator', function() {
 	});
 
 	it('should use variables', function() {
-		assert.equal(e('1 + @a * @b', {
-			'@a': 2,
-			'@b': 4
-		}), 9);
+		var ctx = {
+			'@a': 2, '@b': 4,
+			'$a': 2, '$b': 4,
+			'@border-color': '#111',
+			'foo': function(num) {
+				return num.value * 3;
+			}
+		};
 
-		assert.equal(e('1 + $a * $b', {
-			'$a': 2,
-			'$b': 4
-		}), 9);
+		assert.equal(e('1 + @a * @b', ctx), 9);
+		assert.equal(e('1 + $a * $b', ctx), 9);
+		assert.equal(e('3 + @border-color', ctx), '#141414');
+		assert.equal(e('4 + foo(5)', ctx), '19');
+		assert.equal(e('4 + foo(5, 6)', ctx), '19');
 
-		assert.equal(e('3 + @border-color', {
-			'@border-color': '#111'
-		}), '#141414');
+		assert.equal(e('bar(5, foo)', ctx), 'bar(5, foo)');
+		assert.equal(e('foo', ctx), 'foo');
 	});
 
 	it('should split expression', function() {
