@@ -69,4 +69,10 @@ describe('Performance', function() {
 
 		assert(true);
 	});
+
+	it('of LESS diff', function() {
+		var f = readCSS('less/benchmark.less');
+		var d = diff.diff(f, f, {syntax: 'less'});
+		assert(true);
+	});
 });
