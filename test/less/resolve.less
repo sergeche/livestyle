@@ -1,0 +1,37 @@
+@var1: sample;
+@var2: 10px;
+@var3: @var2 + 5px;
+
+.item1 {
+	padding: 10px;
+}
+
+.@{var1} {
+	margin: 1px;
+	.outer > & {
+		width: 1px;
+	}
+}
+
+.mixin1 {
+	height: 10px;
+}
+
+.mixin2(@a) {
+	left: @a;
+}
+
+.mixin2(@a; @b: 5) {
+	right: @a * @b;
+}
+
+.item2 {
+	.mixin1 ;
+	width: 10px;
+	.mixin2(5px);
+}
+
+.item3 {
+	.mixin2(5px; 2);
+	.not-exists(3px);
+}

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
@@ -82,5 +83,18 @@ describe('LESS', function() {
 				});
 			}
 		});
+	});
+
+	it('should resolve mixins', function() {
+		var lessTree = tree.build(readFile('less/resolve.less'));
+		lessCtx.resolveSelectors(lessTree);
+		var props = function(node) {
+			return lessCtx.properties(node).map(function(p) {
+				return p.name + ': ' + p.value;
+			});
+		}
+
+		assert.deepEqual(props(lessTree.get('.item2')), ['height: 10px', 'width: 10px', 'left: 5px', 'right: 25px']);
+		assert.deepEqual(props(lessTree.get('.item3')), ['right: 10px']);
 	});
 });
