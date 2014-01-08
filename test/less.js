@@ -10,7 +10,10 @@ var cssParser = require('emmet/lib/parser/css');
 var lessCtx = require('../lib/less/context');
 
 function readFile(filePath) {
-	return fs.readFileSync(path.join(__dirname, filePath), 'utf8');
+	if (filePath.charAt(0) !== '/') {
+		filePath = path.join(__dirname, filePath);
+	}
+	return fs.readFileSync(filePath, 'utf8');
 }
 
 describe('LESS', function() {
@@ -96,5 +99,66 @@ describe('LESS', function() {
 
 		assert.deepEqual(props(lessTree.get('.item2')), ['height: 10px', 'width: 10px', 'left: 5px', 'right: 25px', 'height: 10px']);
 		assert.deepEqual(props(lessTree.get('.item3')), ['right: 10px', 'height: 10px']);
+	});
+
+	it('should use dependencies', function() {
+		var lessFile1 = path.join(__dirname, 'bootstrap/jumbotron.less');
+		var lessFile2 = path.join(__dirname, 'bootstrap/modals.less');
+		var varsFile = path.join(__dirname, 'bootstrap/variables.less');
+		var mixinsFile = path.join(__dirname, 'bootstrap/mixins.less');
+
+		var options = {
+			file: lessFile1,
+			syntax: 'less',
+			deps: [{
+				url: varsFile,
+				crc: 'abc',
+				content: readFile(varsFile)
+			}, {
+				url: mixinsFile,
+				crc: 'abc',
+				content: readFile(mixinsFile)
+			}]
+		};
+
+		var lessTree1 = tree.build(readFile(lessFile1));
+		var lessTree2 = tree.build(readFile(lessFile2));
+		var props, expectedProps;
+
+		// check deps variables
+		var props = lessCtx.properties(lessTree1.get('.jumbotron'), options).map(function(p) {
+			return p.name + ': ' + p.value;
+		});
+
+		assert.deepEqual(props, ['padding: 30px', 'margin-bottom: 30px', 'font-size: 21px', 'font-weight: 200', 'line-height: 2.1428571435', 'color: inherit', 'background-color: #eeeeee']);
+
+		var selectors = _.pluck(locator.toList(lessTree1, options), 'pathString');
+		var expectedSelectors = [
+			'.jumbotron',
+			'.jumbotron h1, .jumbotron .h1',
+			'.jumbotron p',
+			'.container .jumbotron',
+			'.jumbotron .container',
+			'@media screen and (min-width: 768px)/.jumbotron',
+			'@media screen and (min-width: 768px)/.container .jumbotron',
+			'@media screen and (min-width: 768px)/.jumbotron h1, .jumbotron .h1'
+		];
+
+		// assert.deepEqual(selectors, expectedSelectors);
+
+		// check deps mixins
+		props = lessCtx.properties(lessTree2.get('.modal').get('&.fade .modal-dialog'), options).map(function(p) {
+			return p.name + ': ' + p.value;
+		});
+
+		assert.deepEqual(props, [
+			'-webkit-transform: translate(0, -25%)',
+			'-ms-transform: translate(0, -25%)',
+			'transform: translate(0, -25%)',
+			'-webkit-transition: -webkit-transform 0.3s ease-out',
+			'-moz-transition: -moz-transform 0.3s ease-out',
+			'-o-transition: -o-transform 0.3s ease-out',
+			'transition: transform 0.3s ease-out'
+		]);
 	});
 });

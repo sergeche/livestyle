@@ -4,6 +4,7 @@ var assert = require('assert');
 var patch = require('../lib/patch');
 var diff = require('../lib/diff');
 var tree = require('../lib/tree');
+var logger = require('../lib/logger');
 var cssParser = require('emmet/lib/parser/css');
 
 function readCSS(cssPath) {
@@ -71,8 +72,10 @@ describe('Performance', function() {
 	});
 
 	it('of LESS diff', function() {
+		logger.silent(true);
 		var f = readCSS('less/benchmark.less');
 		var d = diff.diff(f, f, {syntax: 'less'});
+		logger.silent(false);
 		assert(true);
 	});
 });

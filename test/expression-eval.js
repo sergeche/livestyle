@@ -19,7 +19,7 @@ describe('Expression evaluator', function() {
 	});
 
 	it('should operate with colors', function() {
-		assert.equal(e('#fff'), '#ffffff');
+		assert.equal(e('#fff'), '#fff');
 		assert.equal(e('#555 + 2'), '#575757');
 		assert.equal(e('#fff + 2'), '#ffffff');
 		assert.equal(e('#111 + #222'), '#333333');
