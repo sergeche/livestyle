@@ -161,4 +161,31 @@ describe('LESS', function() {
 			'transition: transform 0.3s ease-out'
 		]);
 	});
+
+	it('should patch LESS source', function() {
+		var lessFile = readFile('bootstrap/jumbotron.less');
+		var varsFile = path.join(__dirname, 'bootstrap/variables.less');
+		var mixinsFile = path.join(__dirname, 'bootstrap/mixins.less');
+
+		var options = {
+			syntax: 'less',
+			deps: [{
+				url: varsFile,
+				crc: 'abc',
+				content: readFile(varsFile)
+			}, {
+				url: mixinsFile,
+				crc: 'abc',
+				content: readFile(mixinsFile)
+			}]
+		};
+
+		var tree1 = tree.build(lessFile);
+		var tree2 = tree.build(lessFile.replace(/@jumbotron-padding;/g, '40px;'));
+		var d = diff.diff(tree1, tree2, options);
+
+		// must apply safe patching
+		var result = patch.patch(lessFile, d, options);
+		assert(~result.indexOf('@jumbotron-padding + 10px'));
+	});
 });
