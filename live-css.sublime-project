@@ -23,6 +23,10 @@
 		}
 	},
 
+	"livestyle": {
+		"less_globals": ["test/bootstrap/variables.less", "test/bootstrap/mixins.less"]
+	},
+
 	"build_systems": [{
 		"name": "Test app",
 		"working_dir": "${project_path}",

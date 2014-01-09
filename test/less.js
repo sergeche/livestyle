@@ -180,12 +180,14 @@ describe('LESS', function() {
 			}]
 		};
 
-		var tree1 = tree.build(lessFile);
-		var tree2 = tree.build(lessFile.replace(/@jumbotron-padding;/g, '40px;'));
+		var lessFile1 = lessFile.replace(/@jumbotron-padding;/g, '@jumbotron-padding + 1;');
+		var lessFile2 = lessFile.replace(/@jumbotron-padding;/g, '40px;');
+		var tree1 = tree.build(lessFile1);
+		var tree2 = tree.build(lessFile2);
 		var d = diff.diff(tree1, tree2, options);
 
 		// must apply safe patching
-		var result = patch.patch(lessFile, d, options);
+		var result = patch.patch(lessFile1, d, options);
 		assert(~result.indexOf('@jumbotron-padding + 10px'));
 	});
 });
