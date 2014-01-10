@@ -190,4 +190,24 @@ describe('LESS', function() {
 		var result = patch.patch(lessFile1, d, options);
 		assert(~result.indexOf('@jumbotron-padding + 10px'));
 	});
+
+	it.only('should safe patch value', function() {
+		var lessFile = '@v:10px;a{b:@v;}';
+		var d = diff.diff('a{b:10px;}', 'a{b:11px;}');
+		var options = {syntax: 'less'};
+		var p = function(val) {
+			if (val) {
+				d[0].properties[0].value = val;
+			}
+			lessFile = patch.patch(lessFile, d, options);
+			console.log(lessFile);
+			return lessFile;
+		};
+
+		assert.equal(p(),       '@v:10px;a{b:@v + 1px;}');
+		assert.equal(p('12px'), '@v:10px;a{b:@v + 2px;}');
+		assert.equal(p('20px'), '@v:10px;a{b:@v + 10px;}');
+		assert.equal(p('5px'),  '@v:10px;a{b:@v - 5px;}');
+		assert.equal(p('10px'), '@v:10px;a{b:@v;}');
+	});
 });
