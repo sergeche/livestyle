@@ -99,6 +99,7 @@ describe('LESS', function() {
 
 		assert.deepEqual(props(lessTree.get('.item2')), ['height: 10px', 'width: 10px', 'left: 5px', 'right: 25px', 'height: 10px']);
 		assert.deepEqual(props(lessTree.get('.item3')), ['right: 10px', 'height: 10px']);
+		assert.deepEqual(props(lessTree.get('.item4')), ['color: red', 'right: 10px !important', 'height: 10px !important', 'background: blue']);
 	});
 
 	it('should use dependencies', function() {
