@@ -101,6 +101,8 @@ describe('LESS', function() {
 		assert.deepEqual(props(lessTree.get('.item3')), ['right: 10px', 'height: 10px']);
 		assert.deepEqual(props(lessTree.get('.item4')), ['color: red', 'right: 10px !important', 'height: 10px !important', 'background: blue']);
 		assert.deepEqual(props(lessTree.get('.item5')), ['color: #1e3b59', 'right: #000000', 'height: 10px']);
+		assert.deepEqual(props(lessTree.get('.item6')), ['background-color: black', 'color: #ddd']);
+		assert.deepEqual(props(lessTree.get('.item7')), ['background-color: white', 'color: #555']);
 	});
 
 	it('should correctly split mixin arguments', function() {
@@ -234,7 +236,25 @@ describe('LESS', function() {
 		assert.equal(p('#ddd'), '@c:#aaa;a{b:@c + #333333;}');
 		assert.equal(p('#999'), '@c:#aaa;a{b:@c - #111111;}');
 		assert.equal(p('#aaa'), '@c:#aaa;a{b:@c;}');
+	});
 
+	it('should parse guards', function() {
+		var g = function(name) {
+			var guardsDef = lessCtx.extractMixinGuard(name);
+			if (!guardsDef.guards) {
+				return name;
+			}
 
+			return guardsDef.name + ' ' + guardsDef.guards.map(function(g) {
+				return '[' + g.map(function(item) {
+					return (item.negate ? '!' : '') + '(' + item.source + ')';
+				}).join(', ') + ']';
+			}).join(', ');
+		};
+
+		assert.equal(g('.a when (a > 0)'), '.a [(a > 0)]');
+		assert.equal(g('.a when (a > 0), (b = 1)'), '.a [(a > 0)], [(b = 1)]');
+		assert.equal(g('.a when (a > 0) and (c > 3), (b = 1)'), '.a [(a > 0), (c > 3)], [(b = 1)]');
+		assert.equal(g('.a when not (a > 0) and not (c > 3), (b = 1)'), '.a [!(a > 0), !(c > 3)], [(b = 1)]');
 	});
 });

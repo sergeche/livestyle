@@ -50,3 +50,16 @@
 .item5 {
 	.mixin2(light; #123);
 }
+
+.mixin3 (@a) when (lightness(@a) >= 50%) {
+	background-color: black;
+}
+.mixin3 (@a) when (lightness(@a) < 50%) {
+	background-color: white;
+}
+.mixin3 (@a) {
+	color: @a;
+}
+
+.item6 { .mixin3(#ddd) }
+.item7 { .mixin3(#555) }

@@ -142,4 +142,19 @@ describe('Expression evaluator', function() {
 		assert.equal(r('a + #fff', '#bc3'), 'a + #bc3');
 		assert.equal(r('a + #fff', '-#bc3'), 'a - #bc3');
 	});
+
+	it('should work with comparison operators', function() {
+		var e = function(expr) {
+			return exprEvaluator.evaluate(expr);
+		};
+
+		assert.equal(e('1 < 2'), true);
+		assert.equal(e('1 > 2'), false);
+		assert.equal(e('1 = 1'), true);
+		assert.equal(e('2 + 2 = 2 * 2'), true);
+		assert.equal(e('2 + 2 <= 2 * 2'), true);
+		assert.equal(e('2 + 2 >= 2 * 2'), true);
+		assert.equal(e('2 + 3 = 2 * 2'), false);
+		assert.equal(e('2 + 3 != 2 * 2'), true);
+	});
 });
