@@ -191,7 +191,7 @@ describe('LESS', function() {
 		assert(~result.indexOf('@jumbotron-padding + 10px'));
 	});
 
-	it.only('should safe patch value', function() {
+	it('should safe patch value', function() {
 		var lessFile = '@v:10px;a{b:@v;}';
 		var d = diff.diff('a{b:10px;}', 'a{b:11px;}');
 		var options = {syntax: 'less'};
@@ -200,14 +200,26 @@ describe('LESS', function() {
 				d[0].properties[0].value = val;
 			}
 			lessFile = patch.patch(lessFile, d, options);
-			console.log(lessFile);
+			// console.log(lessFile);
 			return lessFile;
 		};
 
+		// working with numbers
 		assert.equal(p(),       '@v:10px;a{b:@v + 1px;}');
 		assert.equal(p('12px'), '@v:10px;a{b:@v + 2px;}');
 		assert.equal(p('20px'), '@v:10px;a{b:@v + 10px;}');
 		assert.equal(p('5px'),  '@v:10px;a{b:@v - 5px;}');
 		assert.equal(p('10px'), '@v:10px;a{b:@v;}');
+
+		// working with colors
+		lessFile = '@c:#aaa;a{b:@c;}';
+		d = diff.diff('a{b:#aaa;}', 'a{b:#bbb;}');
+		assert.equal(p(),       '@c:#aaa;a{b:@c + #111111;}');
+		assert.equal(p('#ccc'), '@c:#aaa;a{b:@c + #222222;}');
+		assert.equal(p('#ddd'), '@c:#aaa;a{b:@c + #333333;}');
+		assert.equal(p('#999'), '@c:#aaa;a{b:@c - #111111;}');
+		assert.equal(p('#aaa'), '@c:#aaa;a{b:@c;}');
+
+
 	});
 });
