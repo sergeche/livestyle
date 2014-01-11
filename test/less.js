@@ -103,6 +103,19 @@ describe('LESS', function() {
 		assert.deepEqual(props(lessTree.get('.item5')), ['color: #1e3b59', 'right: #000000', 'height: 10px']);
 	});
 
+	it('should correctly split mixin arguments', function() {
+		var split = function(expr) {
+			return _.pluck(lessCtx.splitArgs(expr), 'name');
+		};
+
+		assert.deepEqual(split('a; b'), ['a', 'b']);
+		assert.deepEqual(split('a, b'), ['a', 'b']);
+		assert.deepEqual(split('a, b, c'), ['a', 'b', 'c']);
+		assert.deepEqual(split('a, b; c'), ['a, b', 'c']);
+		assert.deepEqual(split('a; b, c'), ['a', 'b, c']);
+		assert.deepEqual(split('"a; b", c'), ['"a; b"', 'c']);
+	});
+
 	it('should use dependencies', function() {
 		var lessFile1 = path.join(__dirname, 'bootstrap/jumbotron.less');
 		var lessFile2 = path.join(__dirname, 'bootstrap/modals.less');
