@@ -1,0 +1,13 @@
+@import url(second.css);
+
+@media screen and   ( min-width: 400px ) {
+	.item {
+		font-style: italic;
+		width: 300px;
+	}
+}
+
+.item {
+	height: 500px;
+	background: red;
+}

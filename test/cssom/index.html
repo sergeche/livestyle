@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CSSOM</title>
+	<link rel="stylesheet" href="main.css" />
+	<script src="../../lib/vendor/require.js"></script>
+</head>
+<body>
+	<div class="item">item</div>
+	<button id="apply-patch">Apply patch</button>
+	<script>
+		require.config({
+			baseUrl: '../../lib',
+			paths: {
+				'lodash': 'vendor/lodash'
+			}
+		});
+
+		var patch = [{
+			"path": [
+				["@media screen and (min-width: 400px)",1],
+				[".item",1]
+			],
+			"action": "update",
+			"properties": [
+				{"name": "width", "value": "400px", "index": 0}
+			],
+			"removed": ["font-style"]
+		}, {
+			"path": [
+				["@media screen and (min-width: 400px)",1],
+				["div",1]
+			],
+			"action": "update",
+			"properties": [
+				{"name": "background-color", "value": "green !important", "index": 0}
+			],
+			"removed": []
+		}, {
+			"path": [
+				["@media screen and (min-width: 410px)",1],
+				[".item",1]
+			],
+			"action": "update",
+			"properties": [
+				{"name": "color", "value": "white", "index": 0}
+			],
+			"removed": []
+		}];
+
+		require(['cssom'], function(cssom) {
+			console.log(cssom.stylesheets());
+			console.log(cssom.toList(document.styleSheets[0]));
+
+			document.getElementById('apply-patch').onclick = function() {
+				cssom.patch(document.styleSheets[0], patch);
+			};
+		});
+
+	</script>
+</body>
+</html>
