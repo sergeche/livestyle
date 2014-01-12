@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 			chrome: {
 				files: [
 					fc({
-						src: ['./lib/extension/*.js', './lib/extension/chrome/*.*', './out/worker.js'], 
+						src: ['./lib/extension/*.js', './lib/extension/chrome/*.*', './out/worker.js', './out/cssom.js'], 
 						dest: './out/chrome/'
 					}),
 					fc({
@@ -165,6 +165,10 @@ module.exports = function(grunt) {
 				out: './out/worker.js',
 				include: ['extension/worker']
 			}),
+			cssom: rjsConfig({
+				out: './out/cssom.js',
+				include: ['cssom']
+			}),
 			chrome_devtools: rjsConfig({
 				out: './out/chrome-ext/devtools.js',
 				include: ['extension/chrome/devtools']
@@ -232,7 +236,7 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
-	grunt.registerTask('chrome', ['requirejs:worker', 'copy:chrome_base', 'copy:chrome']);
+	grunt.registerTask('chrome', ['requirejs:worker', 'requirejs:cssom', 'copy:chrome_base', 'copy:chrome']);
 	grunt.registerTask('webkit', ['clean:webkit', 'requirejs:worker', 'requirejs:webkit', 'copy:webkit', 'zip:webkit']);
 	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'requirejs:chrome_options', 'copy:chrome_ext', 'crx', 'zip:chrome']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
