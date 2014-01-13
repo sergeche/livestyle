@@ -1,3 +1,8 @@
+@TextFont: Arial, sans-serif;
+@DefaultInnerTextFontSize: 14px;
+@DefaultInnerTextLineHeight: 20px;
+@DefaultInnerPageFont: @DefaultInnerTextFontSize~"/"@DefaultInnerTextLineHeight @TextFont;
+
 #functions {
   @var: 10;
   @colors: #000, #fff;
@@ -6,6 +11,7 @@
 
 #built-in {
   @r: 32;
+  font: @DefaultInnerPageFont;
   escaped: e("-Some::weird(#thing, y)");
   lighten: lighten(#ff0000, 40%);
   darken: darken(#ff0000, 40%);

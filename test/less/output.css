@@ -3,6 +3,7 @@
 }
 
 #built-in {
+  font: 14px/20px Arial, sans-serif;
   escaped: -Some::weird(#thing, y);
   lighten: #ffcccc;
   darken: #330000;
