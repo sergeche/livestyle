@@ -11,3 +11,7 @@
 	height: 500px;
 	background: red;
 }
+
+@page:first {
+	padding: 10px;
+}
