@@ -84,6 +84,21 @@ module.exports = function(grunt) {
 					}
 				}
 			},
+			chrome_cssom: {
+				files: [
+					fc({
+						src: ['./out/cssom.js'], 
+						dest: './out/chrome'
+					})
+				],
+				options: {
+					processContent: function(content, srcPath) {
+						return '(function(stylesheet, patches){var module = {};'
+							+ content
+							+ ';module.exports.patch(stylesheet, patches);})(%%PARAMS%%);';
+					}
+				}
+			},
 			chrome_ext: {
 				files: [
 					fc({
@@ -134,12 +149,16 @@ module.exports = function(grunt) {
 					})
 				]
 			}
-
+		},
+		uglify: {
+			cssom: {
+				files: {'out/cssom.js': ['lib/cssom.js']}
+			}
 		},
 		watch: {
 			plugins: {
 				files: './lib/**/*.*',
-				tasks: ['chrome', 'webkit', 'notify:watch'],
+				tasks: ['chrome', 'notify:watch'],
 				options: {
 					nospawn: false,
 				}
@@ -164,10 +183,6 @@ module.exports = function(grunt) {
 			worker: rjsConfig({
 				out: './out/worker.js',
 				include: ['extension/worker']
-			}),
-			cssom: rjsConfig({
-				out: './out/cssom.js',
-				include: ['cssom']
 			}),
 			chrome_devtools: rjsConfig({
 				out: './out/chrome-ext/devtools.js',
@@ -233,10 +248,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	// Default task.
 	grunt.registerTask('default', ['copy:chrome']);
-	grunt.registerTask('chrome', ['requirejs:worker', 'requirejs:cssom', 'copy:chrome_base', 'copy:chrome']);
+	grunt.registerTask('chrome', ['requirejs:worker', 'uglify:cssom', 'copy:chrome_base', 'copy:chrome', 'copy:chrome_cssom']);
 	grunt.registerTask('webkit', ['clean:webkit', 'requirejs:worker', 'requirejs:webkit', 'copy:webkit', 'zip:webkit']);
 	grunt.registerTask('pack-chrome', ['clean:chrome_ext', 'requirejs:worker', 'requirejs:chrome_devtools', 'requirejs:chrome_panel', 'requirejs:chrome_background', 'requirejs:chrome_options', 'copy:chrome_ext', 'crx', 'zip:chrome']);
 	grunt.registerTask('readme', ['markdown:readme', 'copy:readme']);
