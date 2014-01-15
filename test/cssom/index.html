@@ -52,6 +52,7 @@
 		require(['cssom'], function(cssom) {
 			console.log(cssom.stylesheets());
 			console.log(cssom.toList(document.styleSheets[0]));
+			console.log(cssom.createIndex(document.styleSheets[0]));
 
 			document.getElementById('apply-patch').onclick = function() {
 				cssom.patch(document.styleSheets[0], patch);

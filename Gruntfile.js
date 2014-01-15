@@ -152,7 +152,10 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			cssom: {
-				files: {'out/cssom.js': ['lib/cssom.js']}
+				files: {'out/cssom.js': ['lib/cssom.js']},
+				options: {
+					mangle: false
+				}
 			}
 		},
 		watch: {

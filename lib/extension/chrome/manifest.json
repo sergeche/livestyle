@@ -23,12 +23,6 @@
 		"https://*/"
 	],
 
-	"content_scripts": [{
-		"js": ["cssom.js", "content-script.js"],
-		"matches": ["http://*/*", "https://*/*", "file://*/*"],
-		"run_at": "document_start"
-	}],
-
 	"manifest_version": 2,
 	"minimum_chrome_version": "26"
 }
