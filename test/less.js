@@ -40,13 +40,20 @@ describe('LESS', function() {
 	});
 
 	it('should patch simple LESS expressions', function() {
-		var less1 = '@v:12px; @c:#fc0; a {b: @v; c: @c; d: @v; e: 10px;}';
-		var css1 = 'a {b: 14px; c: #fa0; d: 3em; e: 12px;}';
+		var less = '@v:12px; @c:#fc0; a {b: @v; c: @c; d: @v; e: 10px;}';
+		var css = 'a {b: 14px; c: #fa0; d: 3em; e: 12px;}';
+		var d = diff.diff(less, css, {syntax: 'less'});
 
-		var d = diff.diff(less1, css1, {syntax: 'less'});
-
-		var patchedSource = patch.patch(less1, d, {syntax: 'less'});
+		var patchedSource = patch.patch(less, d, {syntax: 'less'});
 		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2px; c: @c - #002200; d: 3em; e: 12px;}');
+
+		// check color keywords that collide with build-in functions
+		less = 'a{color:red;}';
+		css = 'a{color:blue;}';
+		var d = diff.diff(less, css, {syntax: 'less'});
+
+		patchedSource = patch.patch(less, d, {syntax: 'less'});
+		assert.equal(patchedSource, 'a{color:blue;}');
 	});
 
 	it('should patch basic LESS expressions', function() {
