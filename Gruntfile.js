@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 					processContent: function(content, srcPath) {
 						return '(function(stylesheet, patches){var module = {};'
 							+ content
-							+ ';module.exports.patch(stylesheet, patches);})(%%PARAMS%%);';
+							+ ';return module.exports.patch(stylesheet, patches);})(%%PARAMS%%);';
 					}
 				}
 			},
@@ -152,10 +152,7 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			cssom: {
-				files: {'out/cssom.js': ['lib/cssom.js']},
-				options: {
-					mangle: false
-				}
+				files: {'out/cssom.js': ['lib/cssom.js']}
 			}
 		},
 		watch: {
