@@ -3,6 +3,7 @@
  */
 var path = require('path');
 var fs = require('fs');
+var tree = require('../../lib/tree');
 
 function isAbsolute(filePath) {
 	return filePath.charAt(0) == '/';
@@ -45,6 +46,18 @@ module.exports = {
 				css: path.join(dir, css)
 			};
 		});
+	},
+
+	getTreeSet: function(dir, ext) {
+		return this.getFileSet(dir, ext).map(function(item) {
+			var ppFile = this.readFile(item.preprocessor);
+			var cssFile = this.readFile(item.css);
+
+			return {
+				preprocessor: tree.build(ppFile),
+				css: tree.build(cssFile)
+			};
+		}, this);
 	},
 
 	readFile: function(f) {
