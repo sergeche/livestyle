@@ -7,7 +7,7 @@ var diff = require('../lib/diff');
 var patch = require('../lib/patch');
 var locator = require('../lib/locator');
 var cssParser = require('emmet/lib/parser/css');
-var lessCtx = require('../lib/less/context');
+var lessCtx = require('../lib/preprocessor/less/context');
 
 function readFile(filePath) {
 	if (filePath.charAt(0) !== '/') {
