@@ -55,7 +55,9 @@ module.exports = {
 
 			return {
 				preprocessor: tree.build(ppFile),
-				css: tree.build(cssFile)
+				preprocessorFile: item.preprocessor,
+				css: tree.build(cssFile),
+				cssFile: item.css
 			};
 		}, this);
 	},
