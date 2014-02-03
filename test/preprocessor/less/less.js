@@ -10,7 +10,7 @@ var selector = require('../../../lib/preprocessor/selector');
 function isEmpty(item) {
 	// remove nodes with empty contents
 	return item.node.properties().filter(function(item) {
-		return item.name !== '&';
+		return item.name !== '&' && item.name.charAt(0) !== '@';
 	}).length;
 }
 
@@ -29,12 +29,12 @@ function resolveCSS(tree) {
 }
 
 describe.only('LESS extend', function() {
-	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').slice(5, 6).forEach(function(item) {
+	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').slice(6, 7).forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
 
-			// console.log(_.pluck(less, 'path'));
+			console.log(_.pluck(less, 'path'));
 			less.forEach(function(item, i) {
 				assert.deepEqual(np(i, item.path), np(i, css[i].path));
 			});
