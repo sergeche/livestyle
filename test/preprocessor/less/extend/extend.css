@@ -1,3 +1,9 @@
+.a,
+.b,
+.c {
+  color: black;
+}
+
 .error,
 .badError {
   border: 1px #f00;
@@ -27,6 +33,7 @@
 .foo .ext4 {
   display: none;
 }
+
 /* div.ext5,
 .ext6 > .ext5,
 div.ext7,
