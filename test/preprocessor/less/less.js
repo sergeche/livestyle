@@ -29,7 +29,7 @@ function resolveCSS(tree) {
 }
 
 describe.only('LESS extend', function() {
-	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').slice(0, 3).forEach(function(item) {
+	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').slice(0, 7).forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
