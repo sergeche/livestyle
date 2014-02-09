@@ -73,7 +73,7 @@ describe('Performance', function() {
 
 	it('of LESS diff', function() {
 		logger.silent(true);
-		var f = readCSS('less/benchmark.less');
+		var f = readCSS('preprocessor/less/common/benchmark.less');
 		var d = diff.diff(f, f, {syntax: 'less'});
 		logger.silent(false);
 		assert(true);

@@ -14,9 +14,6 @@ describe('Locator', function() {
 	var cssTree1 = tree.build(style1);
 	var cssTree2 = tree.build(style2);
 
-	var less1 = readCSS('less/normalize.less');
-	var lessTree1 = tree.build(less1);
-
 	// it.only('should correctly convert tre to list', function() {
 	// 	var lessTree2 = tree.build('table { th {font-weight: bold;} td {font-size: 12px;} }');
 	// 	var list = locator.toList(lessTree2, {syntax: 'less'});
@@ -65,18 +62,5 @@ describe('Locator', function() {
 			'@media all and (min-height: 300px)/body/font-size');
 		assert.equal(loc.node.name(), 'body');
 		assert.deepEqual(loc.rest, [['font-size', 1]]);
-	});
-
-	it('should correctly parse LESS tree', function() {
-		// we have to check the normalization process,
-		// e.g. how LESS selectors are transformed to
-		// internal paths
-		
-		var expected = ['.one', '.one .two', '.one|2', '.one .two|2', '.three', '.four', '.three|2', '.one|3', '.sample', '.sample .test'];
-		var list = locator.toList(lessTree1, {skipPathPos: false, syntax: 'less'}).map(function(item) {
-			return item.pathString;
-		});
-
-		assert.deepEqual(list, expected);
 	});
 });
