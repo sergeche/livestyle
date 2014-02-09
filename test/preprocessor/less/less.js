@@ -28,13 +28,13 @@ function resolveCSS(tree) {
 	return preprocessor.resolve(tree);
 }
 
-describe.only('LESS extend', function() {
-	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').slice(0, 7).forEach(function(item) {
+describe('LESS extend', function() {
+	testUtils.getTreeSet(path.join(__dirname, 'extend'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
 
-			console.log(_.pluck(less, 'path'));
+			// console.log(_.pluck(less, 'path'));
 			less.forEach(function(item, i) {
 				assert.deepEqual(np(i, item.path), np(i, css[i].path));
 			});
