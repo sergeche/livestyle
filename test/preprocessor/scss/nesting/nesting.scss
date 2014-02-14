@@ -1,0 +1,113 @@
+foo {
+	bar {a: b}
+	baz {b: c}
+}
+
+foo {
+  bar {
+  	baz {
+  		a: b
+  	}
+  }
+  bang {
+  	bip {
+  		a: b
+  	}
+  }
+}
+
+// test_nested_rules_with_declarations
+
+foo {
+  a: b;
+  bar {
+  	c: d
+  }
+}
+
+foo {
+  bar {
+  	c: d
+  }
+  a: b
+}
+
+foo {
+  ump: nump;
+  grump: clump;
+  bar {
+    blat: bang;
+    habit: rabbit;
+    baz {
+    	a: b
+    }
+    bip {
+    	c: d
+    }
+  }
+  bibble {
+    bap {
+    	e: f
+    }
+  }
+}
+
+// test_nested_rules_with_fancy_selectors
+foo {
+  .bar {a: b}
+  :baz {c: d}
+  bang:bop {e: f}
+}
+
+foo {
+  bar:baz:bang:bop:biddle:woo:look:at:all:these:pseudoclasses {a: b};
+  bar:baz bang bop biddle woo look at all these elems {a: b};
+  bar:baz bang bop biddle woo look at all these elems;
+}
+
+// test_newlines_in_selectors
+foo
+bar {a: b}
+
+foo,
+bar {
+  baz,
+  bang {a: b}
+}
+
+foo
+bar {
+  baz
+  bang {a: b}
+
+  bip bop {c: d}
+}
+
+foo, bar
+baz {
+  bang, bip
+  bop {a: b}
+}
+
+// test_trailing_comma_in_selector
+
+#foo #bar,,
+,#baz #boom, {a: b}
+
+#bip #bop, ,, {c: d}
+
+// test_parent_selectors
+
+foo {
+  &:hover {a: b}
+  bar &.baz {c: d}
+}
+
+// test_parent_selector_with_subject
+foo {
+  bar &.baz! .bip {a: b}
+}
+
+foo bar {
+  bar &.baz! .bip {c: d}
+}
