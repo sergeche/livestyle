@@ -111,3 +111,10 @@ foo {
 foo bar {
   bar &.baz! .bip {c: d}
 }
+
+foo, bar, baz {
+  &:hover &:active,
+  &.suff3 {
+    padding: 10px;
+  }
+}

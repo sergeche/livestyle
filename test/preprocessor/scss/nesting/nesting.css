@@ -1,124 +1,92 @@
 foo bar {
-  a: b;
-}
+  a: b; }
 foo baz {
-  b: c;
-}
+  b: c; }
 
 foo bar baz {
-  a: b;
-}
+  a: b; }
 foo bang bip {
-  a: b;
-}
-
-/* test_nested_rules_with_declarations */
+  a: b; }
 
 foo {
-  a: b;
-}
-foo bar {
-  c: d;
-}
+  a: b; }
+  foo bar {
+    c: d; }
 
 foo {
-  a: b;
-}
-foo bar {
-    c: d;
-}
+  a: b; }
+  foo bar {
+    c: d; }
 
 foo {
   ump: nump;
-  grump: clump;
-}
-foo bar {
-	blat: bang;
-	habit: rabbit;
-}
-foo bar baz {
-  a: b;
-}
-foo bar bip {
-  c: d;
-}
-foo bibble bap {
-  e: f;
-}
-
-/* test_nested_rules_with_fancy_selectors */
+  grump: clump; }
+  foo bar {
+    blat: bang;
+    habit: rabbit; }
+    foo bar baz {
+      a: b; }
+    foo bar bip {
+      c: d; }
+  foo bibble bap {
+    e: f; }
 
 foo .bar {
-  a: b;
-}
+  a: b; }
 foo :baz {
-  c: d;
-}
+  c: d; }
 foo bang:bop {
-  e: f;
-}
+  e: f; }
 
 foo {
-  bar: baz bang bop biddle woo look at all these elems;
-}
-foo bar:baz:bang:bop:biddle:woo:look:at:all:these:pseudoclasses {
-    a: b;
-}
-foo bar:baz bang bop biddle woo look at all these elems {
-    a: b;
-}
+  bar: baz bang bop biddle woo look at all these elems; }
+  foo bar:baz:bang:bop:biddle:woo:look:at:all:these:pseudoclasses {
+    a: b; }
+  foo bar:baz bang bop biddle woo look at all these elems {
+    a: b; }
 
-/* test_newlines_in_selectors */
-foo bar {
-  a: b;
-}
+foo
+bar {
+  a: b; }
 
 foo baz,
 foo bang,
 bar baz,
 bar bang {
-  a: b;
-}
+  a: b; }
 
-foo bar baz bang {
-  a: b;
-}
-foo bar bip bop {
-  c: d;
-}
+foo
+bar baz
+bang {
+  a: b; }
+foo
+bar bip bop {
+  c: d; }
 
 foo bang, foo bip
 bop, bar
 baz bang, bar
 baz bip
 bop {
-  a: b;
-}
-
-/* test_trailing_comma_in_selector */
+  a: b; }
 
 #foo #bar,
 #baz #boom {
-  a: b;
-}
+  a: b; }
+
 #bip #bop {
-  c: d;
-}
+  c: d; }
 
-/* test_parent_selectors */
 foo:hover {
-  a: b;
-}
+  a: b; }
 bar foo.baz {
-  c: d;
-}
-
-/* test_parent_selector_with_subject */
+  c: d; }
 
 bar foo.baz! .bip {
-  a: b;
-}
+  a: b; }
 
 bar foo bar.baz! .bip {
-  c: d;
-}
+  c: d; }
+
+foo:hover foo:active, foo.suff3, bar:hover foo:active, bar.suff3, baz:hover foo:active, baz.suff3, foo:hover bar:active, bar:hover bar:active, baz:hover bar:active, foo:hover baz:active, bar:hover baz:active, baz:hover baz:active {
+  padding: 10px; }
