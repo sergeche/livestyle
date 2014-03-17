@@ -1,0 +1,152 @@
+// test_multiple_targets
+.foo {a: b}
+.bar {@extend .foo}
+.blip .foo {c: d}
+
+// test_multiple_extendees
+.foo2 {a: b}
+.bar2 {c: d}
+.baz2 {@extend .foo2; @extend .bar2}
+
+// test_multiple_extends_with_single_extender_and_single_target
+.foo3 .bar3 {a: b}
+.baz3 {@extend .foo3; @extend .bar3}
+
+.foo4.bar4 {a: b}
+.baz4 {@extend .foo4; @extend .bar4}
+
+// test_multiple_extends_with_multiple_extenders_and_single_target
+.foo5 .bar5 {a: b}
+.baz5 {@extend .foo5}
+.bang5 {@extend .bar5}
+
+.foo6.bar6 {a: b}
+.baz6 {@extend .foo6}
+.bang6 {@extend .bar6}
+
+// test_chained_extends
+.foo7 {a: b}
+.bar7 {@extend .foo7}
+.baz7 {@extend .bar7}
+.bip7 {@extend .bar7}
+
+// test_dynamic_extendee: skip for now
+
+// test_nested_target
+.foo8 .bar8 {a: b}
+.baz8 {@extend .bar8}
+
+// test_target_with_child
+.foo9 .bar9 {a: b}
+.baz9 {@extend .foo9}
+
+// test_class_unification
+.foo10.bar10 {a: b}
+.baz10 {@extend .foo10}
+
+.foo11.baz11 {a: b}
+.baz11 {@extend .foo11}
+
+// test_id_unification
+.foo12.bar12 {a: b}
+#baz12 {@extend .foo12}
+
+.foo13#baz13 {a: b}
+#baz13 {@extend .foo13}
+
+// test_universal_unification: skip it for now
+
+// test_element_unification_with_simple_target
+.foo14 {a: b}
+a {@extend .foo14}
+
+.foo15.bar15 {a: b}
+a {@extend .foo15}
+
+
+// test_attribute_unification
+[foo=bar].baz16 {a: b}
+[foo=baz] {@extend .baz16}
+
+[foo=bar].baz17 {a: b}
+[foo^=bar] {@extend .baz17}
+
+[foo=bar].baz18 {a: b}
+[foot=bar] {@extend .baz18}
+
+// test_pseudo_unification
+:foo.baz19 {a: b}
+:foo(2n+1) {@extend .baz19}
+
+:foo.baz20 {a: b}
+::foo {@extend .baz20}
+
+::foo.baz21 {a: b}
+::foo {@extend .baz21}
+
+::foo(2n+1).baz22 {a: b}
+::foo(2n+1) {@extend .baz22}
+
+:foo.baz23 {a: b}
+:bar {@extend .baz23}
+
+.baz24:foo {a: b}
+:after {@extend .baz24}
+
+.baz25:after {a: b}
+:foo {@extend .baz25}
+
+:foo.baz26 {a: b}
+:foo {@extend .baz26}
+
+// test_pseudoelement_remains_at_end_of_selector
+.foo27::bar {a: b}
+.baz27 {@extend .foo27}
+
+a.foo28::bar {a: b}
+.baz28 {@extend .foo28}
+
+// test_pseudoclass_remains_at_end_of_selector
+.foo29:bar {a: b}
+.baz29 {@extend .foo29}
+
+a.foo30:bar {a: b}
+.baz30 {@extend .foo30}
+
+// test_not_remains_at_end_of_selector
+.foo31:not(.bar) {a: b}
+.baz31 {@extend .foo31}
+
+// test_pseudoelement_goes_lefter_than_pseudoclass
+.foo32::bar {a: b}
+.baz32:bang {@extend .foo32}
+
+.foo33:bar {a: b}
+.baz33::bang {@extend .foo33}
+
+// test_pseudoelement_goes_lefter_than_not
+.foo34::bar {a: b}
+.baz34:not(.bang) {@extend .foo34}
+
+.foo35:not(.bang) {a: b}
+.baz35::bar {@extend .foo35}
+
+// test_negation_unification
+:not(.foo).baz36 {a: b}
+:not(.bar) {@extend .baz36}
+
+:not(.foo).baz37 {a: b}
+:not(.foo) {@extend .baz37}
+
+:not([a=b]).baz38 {a: b}
+:not([a = b]) {@extend .baz38}
+
+// test_comma_extendee
+.foo39 {a: b}
+.bar39 {c: d}
+.baz39 {@extend .foo39, .bar39}
+
+// test_redundant_selector_elimination
+.foo40.bar40 {a: b}
+.x40 {@extend .foo40, .bar40}
+.y40 {@extend .foo40, .bar40}

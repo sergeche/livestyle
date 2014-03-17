@@ -1,0 +1,59 @@
+.message, .success, .warning {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333; }
+
+.success {
+  border-color: green; }
+
+.warning {
+  border-color: yellow; }
+
+.error, .seriousError, .criticalError {
+  border: 1px #f00;
+  background-color: #fdd; }
+
+.error.intrusion, .intrusion.seriousError, .intrusion.criticalError {
+  background-image: url("/image/hacked.png"); }
+
+.attention, .seriousError, .criticalError {
+  font-size: 3em;
+  background-color: #ff0; }
+
+.seriousError, .criticalError {
+  border-width: 3px; }
+
+.seriousError, .criticalError {
+  color: 3px; }
+
+@media print {
+  .seriousError2 {
+    /* @extend .error; */
+    border-width: 3px; } }
+.criticalError {
+  position: fixed; }
+
+.comment a.user:hover, .comment .user.hoverlink {
+  font-weight: bold; }
+
+b, #fake-links .link {
+  color: blue; }
+  b:hover, #fake-links .link:hover {
+    text-decoration: underline; }
+
+#admin .tabbar i, #admin .tabbar #demo .overview .fakelink, #demo .overview #admin .tabbar .fakelink {
+  font-weight: bold; }
+
+#admin2 d .tabbar2, #admin2 #demo2 > .overview2 > .fakelink2 .tabbar2 {
+  font-weight: bold; }
+
+#admin3 e .tabbar3, #admin3 #demo3 .overview3 .fakelink3 .tabbar3, #demo3 .overview3 #admin3 .fakelink3 .tabbar3 {
+  font-weight: bold; }
+
+#admin .tabbar c, #admin .tabbar .overview .fakelink, #admin .overview .tabbar .fakelink {
+  font-weight: bold; }
+
+#context dd.notice {
+  color: blue;
+  font-weight: bold;
+  font-size: 2em; }

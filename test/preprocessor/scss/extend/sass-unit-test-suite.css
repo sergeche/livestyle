@@ -1,0 +1,128 @@
+.foo, .bar {
+  a: b; }
+
+.blip .foo, .blip .bar {
+  c: d; }
+
+.foo2, .baz2 {
+  a: b; }
+
+.bar2, .baz2 {
+  c: d; }
+
+.foo3 .bar3, .baz3 .bar3, .foo3 .baz3, .baz3 .baz3 {
+  a: b; }
+
+.foo4.bar4, .baz4 {
+  a: b; }
+
+.foo5 .bar5, .baz5 .bar5, .foo5 .bang5, .baz5 .bang5 {
+  a: b; }
+
+.foo6.bar6, .bar6.baz6, .baz6.bang6, .foo6.bang6 {
+  a: b; }
+
+.foo7, .bar7, .baz7, .bip7 {
+  a: b; }
+
+.foo8 .bar8, .foo8 .baz8 {
+  a: b; }
+
+.foo9 .bar9, .baz9 .bar9 {
+  a: b; }
+
+.foo10.bar10, .bar10.baz10 {
+  a: b; }
+
+.foo11.baz11, .baz11 {
+  a: b; }
+
+.foo12.bar12, .bar12#baz12 {
+  a: b; }
+
+.foo13#baz13, #baz13 {
+  a: b; }
+
+.foo14, a {
+  a: b; }
+
+.foo15.bar15, a.bar15 {
+  a: b; }
+
+[foo=bar].baz16, [foo=bar][foo=baz] {
+  a: b; }
+
+[foo=bar].baz17, [foo=bar][foo^=bar] {
+  a: b; }
+
+[foo=bar].baz18, [foo=bar][foot=bar] {
+  a: b; }
+
+:foo.baz19, :foo:foo(2n+1) {
+  a: b; }
+
+:foo.baz20, :foo::foo {
+  a: b; }
+
+::foo.baz21, ::foo {
+  a: b; }
+
+::foo(2n+1).baz22, ::foo(2n+1) {
+  a: b; }
+
+:foo.baz23, :foo:bar {
+  a: b; }
+
+.baz24:foo, :foo:after {
+  a: b; }
+
+.baz25:after, :foo:after {
+  a: b; }
+
+:foo.baz26, :foo {
+  a: b; }
+
+.foo27::bar, .baz27::bar {
+  a: b; }
+
+a.foo28::bar, a.baz28::bar {
+  a: b; }
+
+.foo29:bar, .baz29:bar {
+  a: b; }
+
+a.foo30:bar, a.baz30:bar {
+  a: b; }
+
+.foo31:not(.bar), .baz31:not(.bar) {
+  a: b; }
+
+.foo32::bar, .baz32:bang::bar {
+  a: b; }
+
+.foo33:bar, .baz33:bar::bang {
+  a: b; }
+
+.foo34::bar, .baz34:not(.bang)::bar {
+  a: b; }
+
+.foo35:not(.bang), .baz35:not(.bang)::bar {
+  a: b; }
+
+:not(.foo).baz36, :not(.foo):not(.bar) {
+  a: b; }
+
+:not(.foo).baz37, :not(.foo) {
+  a: b; }
+
+:not([a=b]).baz38, :not([a=b]) {
+  a: b; }
+
+.foo39, .baz39 {
+  a: b; }
+
+.bar39, .baz39 {
+  c: d; }
+
+.foo40.bar40, .x40, .y40 {
+  a: b; }

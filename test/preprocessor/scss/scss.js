@@ -35,8 +35,8 @@ function np(ix, path) {
 	return 'Rule ' + (ix + 1) + ': ' + selector.normalize(path.join(' / '));
 }
 
-describe('SCSS nesting', function() {
-	testUtils.getTreeSet(p('nesting'), 'scss').forEach(function(item) {
+function iterate(treeSet) {
+	treeSet.forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveSCSS(item.preprocessor);
 			var css = resolveCSS(item.css);
@@ -47,4 +47,12 @@ describe('SCSS nesting', function() {
 			});
 		});
 	});
+}
+
+describe('SCSS nesting', function() {
+	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
+});
+
+describe('SCSS extend', function() {
+	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
 });
