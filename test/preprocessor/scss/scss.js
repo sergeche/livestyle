@@ -56,3 +56,7 @@ describe('SCSS nesting', function() {
 describe('SCSS extend', function() {
 	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
 });
+
+describe('SCSS debug', function() {
+	iterate(testUtils.getTreeSet(p('debug'), 'scss'));
+});
