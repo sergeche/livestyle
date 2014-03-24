@@ -1,2 +1,9 @@
-.foo3 .bar3 {a: b}
-.baz3 {@extend .foo3; @extend .bar3}
+@mixin test {
+	padding: 10px;
+}
+
+div {
+	@include test;
+}
+
+@include test;

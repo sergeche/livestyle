@@ -49,14 +49,30 @@ function iterate(treeSet) {
 	});
 }
 
-describe('SCSS nesting', function() {
-	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
-});
+// describe('SCSS nesting', function() {
+// 	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
+// });
 
-describe('SCSS extend', function() {
-	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
-});
+// describe('SCSS extend', function() {
+// 	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
+// });
 
 // describe('SCSS debug', function() {
 // 	iterate(testUtils.getTreeSet(p('debug'), 'scss'));
 // });
+
+describe('SCSS mixins', function() {
+	it.only('should work', function() {
+		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')))
+
+		console.log('SECTIONS');
+		scssTree.sectionList().forEach(function(item) {
+			console.log(item.node.name());
+		});
+
+		console.log('PROPERTIES');
+		scssTree.children.forEach(function(item) {
+			console.log('%s (%s)', item.name(), item.type);
+		});
+	});
+});

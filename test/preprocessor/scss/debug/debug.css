@@ -1,2 +1,6 @@
-.foo3 .bar3, .baz3 .bar3, .foo3 .baz3, .baz3 .baz3 {
-  a: b; }
+b, #fake-links .link {
+  color: blue;
+}
+b:hover, #fake-links .link:hover {
+  text-decoration: underline;
+}
