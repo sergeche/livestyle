@@ -7,6 +7,7 @@ var patch = require('../../../lib/patch');
 var locator = require('../../../lib/locator');
 
 var scssResolver = require('../../../lib/preprocessor/scss/resolver');
+var scssMixin = require('../../../lib/preprocessor/scss/mixin');
 var preprocessor = require('../../../lib/preprocessor/resolver');
 var selector = require('../../../lib/preprocessor/selector');
 
@@ -65,14 +66,9 @@ describe('SCSS mixins', function() {
 	it.only('should work', function() {
 		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')))
 
-		console.log('SECTIONS');
-		scssTree.sectionList().forEach(function(item) {
-			console.log(item.node.name());
-		});
-
-		console.log('PROPERTIES');
-		scssTree.children.forEach(function(item) {
-			console.log('%s (%s)', item.name(), item.type);
+		console.log('Nodes:');
+		scssMixin.toList(scssTree).forEach(function(item) {
+			console.log(item.path.join(' / '));
 		});
 	});
 });
