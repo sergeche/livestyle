@@ -68,7 +68,9 @@ describe('SCSS mixins', function() {
 
 		console.log('Nodes:');
 		scssMixin.toList(scssTree).forEach(function(item) {
-			console.log(item.path.join(' / '));
+			console.log('%s {%s}', item.path.join(' / '), scssResolver.properties(item.node).map(function(prop) {
+				return prop.name + ': ' + prop.value;
+			}).join('; '));
 		});
 	});
 });

@@ -1,11 +1,32 @@
-@mixin test {
-	a {
-		padding: 10px;
-	}
+// @mixin prop {
+// 	margin: 10px;
+// }
+
+// @mixin test {
+// 	a {
+// 		@include prop;
+// 		padding: 10px;
+// 	}
+// }
+
+// @mixin with-args() {
+
+// }
+
+// div {
+// 	@include test;
+// }
+
+// @include test;
+
+@mixin sexy-border($color, $width) {
+  border: {
+    color: $color;
+    width: $width;
+    style: dashed;
+  }
 }
 
-div {
-	@include test;
+p {
+	@include sexy-border(blue, 1in);
 }
-
-@include test;
