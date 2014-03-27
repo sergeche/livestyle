@@ -62,15 +62,24 @@ function iterate(treeSet) {
 // 	iterate(testUtils.getTreeSet(p('debug'), 'scss'));
 // });
 
-describe('SCSS mixins', function() {
-	it.only('should work', function() {
-		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')))
-
-		console.log('Nodes:');
-		scssMixin.toList(scssTree).forEach(function(item) {
-			console.log('%s {%s}', item.path.join(' / '), scssResolver.properties(item.node).map(function(prop) {
-				return prop.name + ': ' + prop.value;
-			}).join('; '));
-		});
+describe('SASS transformer', function() {
+	it('should work', function() {
+		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')));
+		var cssTree = scssResolver.transform(scssTree);
+		console.log('Result:');
+		console.log(cssTree.toCSS());
 	});
 });
+
+// describe('SCSS mixins', function() {
+// 	it.only('should work', function() {
+// 		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')))
+
+// 		console.log('Nodes:');
+// 		scssMixin.toList(scssTree).forEach(function(item) {
+// 			console.log('%s {%s}', item.path.join(' / '), scssResolver.properties(item.node).map(function(prop) {
+// 				return prop.name + ': ' + prop.value;
+// 			}).join('; '));
+// 		});
+// 	});
+// });
