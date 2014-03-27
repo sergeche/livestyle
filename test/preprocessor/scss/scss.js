@@ -12,13 +12,13 @@ var preprocessor = require('../../../lib/preprocessor/resolver');
 var selector = require('../../../lib/preprocessor/selector');
 
 function resolveSCSS(tree) {
-	return scssResolver.resolve(tree).filter(function(item) {
+	return scssResolver.resolve(tree).sectionList().filter(function(item) {
 		return isEmpty(item);
 	});
 }
 
 function resolveCSS(tree) {
-	return preprocessor.resolve(tree);
+	return tree.sectionList();
 }
 
 function p(dir) {
@@ -27,9 +27,7 @@ function p(dir) {
 
 function isEmpty(item) {
 	// remove nodes with empty contents
-	return item.node.properties().filter(function(item) {
-		return item.name !== '&' && item.name.charAt(0) !== '@';
-	}).length;
+	return item.node.children.length;
 }
 
 function np(ix, path) {
@@ -50,9 +48,9 @@ function iterate(treeSet) {
 	});
 }
 
-// describe('SCSS nesting', function() {
-// 	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
-// });
+describe('SCSS nesting', function() {
+	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
+});
 
 // describe('SCSS extend', function() {
 // 	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
@@ -65,21 +63,8 @@ function iterate(treeSet) {
 describe('SASS transformer', function() {
 	it('should work', function() {
 		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')));
-		var cssTree = scssResolver.transform(scssTree);
+		var cssTree = scssResolver.resolve(scssTree);
 		console.log('Result:');
 		console.log(cssTree.toCSS());
 	});
 });
-
-// describe('SCSS mixins', function() {
-// 	it.only('should work', function() {
-// 		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')))
-
-// 		console.log('Nodes:');
-// 		scssMixin.toList(scssTree).forEach(function(item) {
-// 			console.log('%s {%s}', item.path.join(' / '), scssResolver.properties(item.node).map(function(prop) {
-// 				return prop.name + ': ' + prop.value;
-// 			}).join('; '));
-// 		});
-// 	});
-// });
