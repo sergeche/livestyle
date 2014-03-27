@@ -1,15 +1,9 @@
-@mixin apply-to-ie6-only {
-  * html {
-    @content;
-  }
-  
-  div {
-    @content;
-  }
+.seriousError {
+  @extend .error;
+  border-width: 3px;
 }
-@include apply-to-ie6-only {
-  padding: 10px;
-  #logo {
-    background-image: url(/logo.gif);
-  }
+
+.error {
+  border: 1px #f00;
+  background-color: #fdd;
 }
