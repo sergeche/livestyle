@@ -1,9 +1,15 @@
-.seriousError {
-  @extend .error;
-  border-width: 3px;
+#sample b%not-in-css {
+	color: blue;
+	font-weight: bold;
+	font-size: 2em;
 }
 
-.error {
-  border: 1px #f00;
-  background-color: #fdd;
+#context dd%extreme {
+	color: blue;
+	font-weight: bold;
+	font-size: 2em;
+}
+
+.notice {
+	@extend %extreme !optional;
 }
