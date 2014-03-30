@@ -1,15 +1,19 @@
-#sample b%not-in-css {
-	color: blue;
-	font-weight: bold;
-	font-size: 2em;
+.parent {
+  @at-root .child {
+    padding: 10px;
+    .child2 {
+      margin:10px;
+    }
+  }
 }
 
-#context dd%extreme {
-	color: blue;
-	font-weight: bold;
-	font-size: 2em;
-}
-
-.notice {
-	@extend %extreme !optional;
+@media print {
+	.parent {
+	  @at-root .child {
+	    padding: 10px;
+	    .child2 {
+	      margin:10px;
+	    }
+	  }
+	}
 }
