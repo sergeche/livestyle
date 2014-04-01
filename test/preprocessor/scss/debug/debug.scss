@@ -1,3 +1,5 @@
-@for $i from 1 through 3 {
+$i: 6;
+@while $i > 0 {
   .item-#{$i} { width: 2em * $i; }
+  $i: $i - 2;
 }
