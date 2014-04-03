@@ -13,14 +13,10 @@ var selector = require('../../../lib/preprocessor/selector');
 
 function resolveSCSS(tree) {
 	return scssResolver.resolve(tree).sectionList().filter(function(item) {
-		if (!notEmpty(item)) {
-			return false;
-		}
-
 		// check if current node contains empty sections
 		for (var i = 0, il = item.node.children.length, c; i < il; i++) {
 			c = item.node.children[i];
-			if (c.type == 'property' || notEmpty(c)) {
+			if (c.type == 'property' || c.children.length) {
 				return true;
 			}
 		}
@@ -37,10 +33,6 @@ function p(dir) {
 	return path.join(__dirname, dir);
 }
 
-function notEmpty(item) {
-	return !!item.node.children.length;
-}
-
 function np(ix, path) {
 	return 'Rule ' + (ix + 1) + ': ' + selector.normalize(path.join(' / '));
 }
@@ -48,11 +40,10 @@ function np(ix, path) {
 function iterate(treeSet) {
 	treeSet.forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
-			var less = resolveSCSS(item.preprocessor);
+			var scss = resolveSCSS(item.preprocessor);
 			var css = resolveCSS(item.css);
 
-			// console.log(_.pluck(less, 'path'));
-			less.forEach(function(item, i) {
+			scss.forEach(function(item, i) {
 				assert.deepEqual(np(i, item.path), np(i, css[i].path));
 			});
 		});
@@ -79,19 +70,19 @@ function convert(val) {
 	return val;
 }
 
-function parse(expr) {
-	return convert(scssExpr.parse(expr));
-}
-
 describe('SCSS nesting', function() {
 	iterate(testUtils.getTreeSet(p('nesting'), 'scss'));
 });
 
-// describe('SCSS other', function() {
-// 	iterate(testUtils.getTreeSet(p('other'), 'scss'));
-// });
+describe('SCSS other', function() {
+	iterate(testUtils.getTreeSet(p('other'), 'scss'));
+});
 
 describe('SCSS expression parser', function() {
+	function parse(expr) {
+		return convert(scssExpr.parse(expr));
+	}
+
 	it('should parse lists', function() {
 		assert.deepEqual(parse('1, 2, 3'), [1, 2, 3]);
 		assert.deepEqual(parse('1 + 2, 3'), ['1 + 2', 3]);
@@ -114,19 +105,15 @@ describe('SCSS expression parser', function() {
 	});
 });
 
-// describe('SCSS extend', function() {
-// 	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
-// });
-
-// describe('SCSS debug', function() {
-// 	iterate(testUtils.getTreeSet(p('debug'), 'scss'));
-// });
-
-describe('SASS transformer', function() {
-	it('should work', function() {
-		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')));
-		var cssTree = scssResolver.resolve(scssTree);
-		console.log('Result:');
-		console.log(cssTree.toCSS());
-	});
+describe('SCSS extend', function() {
+	iterate(testUtils.getTreeSet(p('extend'), 'scss'));
 });
+
+// describe('SASS debug', function() {
+// 	it('should work', function() {
+// 		var scssTree = tree.build(testUtils.readFile(p('debug/debug.scss')));
+// 		var cssTree = scssResolver.resolve(scssTree);
+// 		console.log('Result:');
+// 		console.log(cssTree.toCSS());
+// 	});
+// });
