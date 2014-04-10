@@ -1,39 +1,15 @@
-@base: sample;
-
-.one {
-	font-size: 10px;
-	.two {
-		color: #fff;
-	}
+//very simple chaining
+.a {
+  color: black;
 }
 
-.one {
-	padding: 10px;
-	.two {
-		margin: 10px;
-	}
-}
+.b:extend(.a) {}
+.c:extend(.b) {}
 
-.three {
-	font-size: 10px;
-}
+//very simple chaining, ordering not important
 
-.four {
-	padding: 10px;
-}
-
-.three {
-	margin: 10px;
-}
-
-.one {
-	margin: 0;
-}
-
-.@{base} {
-	padding: 10px;
-
-	.test {
-		padding: 10px;
-	}
+.d:extend(.e) {}
+.e:extend(.f) {}
+.f {
+  color: black;
 }
