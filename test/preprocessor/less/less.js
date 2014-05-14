@@ -34,8 +34,16 @@ function np(ix, path) {
 }
 
 function resolveLESS(tree) {
-	return lessResolver.resolve(tree).filter(function(item) {
-		return isEmpty(item);
+	return lessResolver.resolve(tree).sectionList().filter(function(item) {
+		// check if current node contains empty sections
+		for (var i = 0, il = item.node.children.length, c; i < il; i++) {
+			c = item.node.children[i];
+			if (c.type == 'property' || c.children.length) {
+				return true;
+			}
+		}
+
+		return false;
 	});
 }
 
@@ -43,7 +51,7 @@ function resolveCSS(tree) {
 	return preprocessor.resolve(tree);
 }
 
-describe('LESS extend', function() {
+describe.only('LESS extend', function() {
 	testUtils.getTreeSet(p('extend'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveLESS(item.preprocessor);
