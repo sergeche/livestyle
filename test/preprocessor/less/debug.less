@@ -1,5 +1,5 @@
 //very simple chaining
-.a {
+/* .a {
   color: black;
 }
 
@@ -12,4 +12,41 @@
 .e:extend(.f) {}
 .f {
   color: black;
+  color: #fff;
 }
+
+//extend multi-chaining
+
+.l {
+  color: black;
+}
+.m:extend(.l){}
+.n:extend(.m){}
+.o:extend(.n){}
+.p:extend(.o){}
+.q:extend(.p){}
+.r:extend(.q){}
+.s:extend(.r){}
+.t:extend(.s){}
+
+// classic circular references
+
+.x:extend(.z) {
+  color: x;
+}
+.y:extend(.x) {
+  color: y;
+}
+.z:extend(.y) {
+  color: z;
+} */
+
+//extend with all
+
+.g.h {
+  color: black;
+}
+.i.j:extend(.g all) {
+  color: white;
+}
+.k:extend(.i all) {}
