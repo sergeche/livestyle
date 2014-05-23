@@ -43,10 +43,31 @@
 
 //extend with all
 
-.g.h {
+/* .g.h {
   color: black;
 }
 .i.j:extend(.g all) {
   color: white;
 }
-.k:extend(.i all) {}
+.k:extend(.i all) {} */
+
+.a {
+  color: black;
+}
+
+@media tv {
+  .ma:extend(.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l,.m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x,.y,.z,.md) {
+    color: black;
+  }
+  .md {
+    color: white;
+  }
+  @media plasma {
+    .me, .mf {
+      &:extend(.mb,.md);
+      background: red;
+    }
+  }
+}
+.mb:extend(.ma) {};
+.mc:extend(.mb) {};

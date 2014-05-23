@@ -34,7 +34,8 @@ function np(ix, path) {
 }
 
 function resolveLESS(tree) {
-	return lessResolver.resolve(tree).sectionList().filter(function(item) {
+	var processed = lessResolver.resolve(tree);
+	return processed.sectionList().filter(function(item) {
 		// check if current node contains empty sections
 		for (var i = 0, il = item.node.children.length, c; i < il; i++) {
 			c = item.node.children[i];
@@ -48,16 +49,19 @@ function resolveLESS(tree) {
 }
 
 function resolveCSS(tree) {
-	return preprocessor.resolve(tree);
+	return tree.sectionList();
 }
 
 describe.only('LESS extend', function() {
 	testUtils.getTreeSet(p('extend'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
+			// if (!~item.preprocessorFile.indexOf('extend-chaining.less')) {
+			// 	return;
+			// }
+
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
 
-			// console.log(_.pluck(less, 'path'));
 			less.forEach(function(item, i) {
 				assert.deepEqual(np(i, item.path), np(i, css[i].path));
 			});
