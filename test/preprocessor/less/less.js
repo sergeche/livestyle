@@ -39,7 +39,7 @@ function resolveLESS(tree) {
 		// check if current node contains empty sections
 		for (var i = 0, il = item.node.children.length, c; i < il; i++) {
 			c = item.node.children[i];
-			if (c.type == 'property' || c.children.length) {
+			if (c.type !== 'section' || c.children.length) {
 				return true;
 			}
 		}
