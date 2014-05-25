@@ -28,9 +28,12 @@
 .ext3 .bar,
 .ext3 .baz,
 .foo .ext3,
+.ext1 .ext2 .ext3, /* <-- shouldn’t be here */
 .ext4 .bar,
 .ext4 .baz,
-.foo .ext4 {
+.foo .ext4,
+.ext1 .ext2 .ext4  /* <-- shouldn’t be here */
+{
   display: none;
 }
 

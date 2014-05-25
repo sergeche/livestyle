@@ -1,73 +1,13 @@
-//very simple chaining
-/* .a {
-  color: black;
+.foo .bar, .foo .baz {
+    display: none;
 }
 
-.b:extend(.a) {}
-.c:extend(.b) {}
-
-//very simple chaining, ordering not important
-
-.d:extend(.e) {}
-.e:extend(.f) {}
-.f {
-  color: black;
-  color: #fff;
+.ext1 .ext2 {
+    &:extend(.foo all);
 }
 
-//extend multi-chaining
-
-.l {
-  color: black;
+.ext3,
+.ext4 {
+  &:extend(.foo all);
+  &:extend(.bar all);
 }
-.m:extend(.l){}
-.n:extend(.m){}
-.o:extend(.n){}
-.p:extend(.o){}
-.q:extend(.p){}
-.r:extend(.q){}
-.s:extend(.r){}
-.t:extend(.s){}
-
-// classic circular references
-
-.x:extend(.z) {
-  color: x;
-}
-.y:extend(.x) {
-  color: y;
-}
-.z:extend(.y) {
-  color: z;
-} */
-
-//extend with all
-
-/* .g.h {
-  color: black;
-}
-.i.j:extend(.g all) {
-  color: white;
-}
-.k:extend(.i all) {} */
-
-.a {
-  color: black;
-}
-
-@media tv {
-  .ma:extend(.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l,.m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x,.y,.z,.md) {
-    color: black;
-  }
-  .md {
-    color: white;
-  }
-  @media plasma {
-    .me, .mf {
-      &:extend(.mb,.md);
-      background: red;
-    }
-  }
-}
-.mb:extend(.ma) {};
-.mc:extend(.mb) {};
