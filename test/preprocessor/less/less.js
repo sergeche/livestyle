@@ -52,13 +52,9 @@ function resolveCSS(tree) {
 	return tree.sectionList();
 }
 
-describe.only('LESS extend', function() {
+describe('LESS extend', function() {
 	testUtils.getTreeSet(p('extend'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
-			// if (!~item.preprocessorFile.indexOf('extend-chaining.less')) {
-			// 	return;
-			// }
-
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
 
@@ -106,7 +102,7 @@ describe('LESS generic', function() {
 		assert.deepEqual(d[0].path, [['.section a:hover', 1]]);
 	});
 
-	it('should patch simple LESS expressions', function() {
+	it.only('should patch simple LESS expressions', function() {
 		var less = '@v:12px; @c:#fc0; a {b: @v; c: @c; d: @v; e: 10px;}';
 		var css = 'a {b: 14px; c: #fa0; d: 3em; e: 12px;}';
 		var d = diff.diff(less, css, {syntax: 'less'});
