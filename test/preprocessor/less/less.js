@@ -102,7 +102,7 @@ describe('LESS generic', function() {
 		assert.deepEqual(d[0].path, [['.section a:hover', 1]]);
 	});
 
-	it.only('should patch simple LESS expressions', function() {
+	it('should patch simple LESS expressions', function() {
 		var less = '@v:12px; @c:#fc0; a {b: @v; c: @c; d: @v; e: 10px;}';
 		var css = 'a {b: 14px; c: #fa0; d: 3em; e: 12px;}';
 		var d = diff.diff(less, css, {syntax: 'less'});
@@ -130,49 +130,25 @@ describe('LESS generic', function() {
 		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2 / 1 + 2px; c: @c + #001466; d: lighten(@c, 10%) + #000a33; }');
 	});
 
-	it('should evaluate expression in tree context', function() {
-		var input = readFile('common/input.less');
-		var output = readFile('common/output.css');
-
-		var inTree = tree.build(input);
-		var outTree = tree.build(output);
-
-		inTree.children.forEach(function(item) {
-			if (item.type == 'section') {
-				var sectionName = item.name();
-				var ctx = null;
-				item.properties().forEach(function(prop) {
-					if (prop.name.charAt(0) == '@') return;
-
-					var prefix = sectionName + '/' + prop.name + ': ';
-					var expectedValue = outTree.get(sectionName).get(prop.name).value();
-
-					if (!ctx) {
-						ctx = lessCtx.context(prop.node);
-					}
-
-					var val = lessCtx.eval(prop.node, ctx);
-					assert.equal(prefix + val, prefix + expectedValue);
-				});
+	it.only('should resolve mixins', function() {
+		var lessTree = lessResolver.resolve(readFile('common/resolve.less'));
+		var sections = lessTree.sectionList();
+		var propertiesFor = function(name) {
+			for (var i = 0, il = sections.length; i < il; i++) {
+				if (sections[i].name == name) {
+					return sections[i].node.properties().map(function(p) {
+						return p.name + ': ' + p.value;
+					});
+				}
 			}
-		});
-	});
+		};
 
-	it('should resolve mixins', function() {
-		var lessTree = tree.build(readFile('common/resolve.less'));
-		lessCtx.resolveSelectors(lessTree);
-		var props = function(node) {
-			return lessCtx.properties(node).map(function(p) {
-				return p.name + ': ' + p.value;
-			});
-		}
-
-		assert.deepEqual(props(lessTree.get('.item2')), ['height: 10px', 'width: 10px', 'left: 5px', 'right: 25px', 'height: 10px']);
-		assert.deepEqual(props(lessTree.get('.item3')), ['right: 10px', 'height: 10px']);
-		assert.deepEqual(props(lessTree.get('.item4')), ['color: red', 'right: 10px !important', 'height: 10px !important', 'background: blue']);
-		assert.deepEqual(props(lessTree.get('.item5')), ['color: #1e3b59', 'right: #000000', 'height: 10px']);
-		assert.deepEqual(props(lessTree.get('.item6')), ['background-color: black', 'color: #ddd']);
-		assert.deepEqual(props(lessTree.get('.item7')), ['background-color: white', 'color: #555']);
+		assert.deepEqual(propertiesFor('.item2'), ['height: 10px', 'width: 10px', 'left: 5px', 'right: 25px', 'height: 10px']);
+		assert.deepEqual(propertiesFor('.item3'), ['right: 10px', 'height: 10px']);
+		assert.deepEqual(propertiesFor('.item4'), ['color: red', 'right: 10px !important', 'height: 10px !important', 'background: blue']);
+		assert.deepEqual(propertiesFor('.item5'), ['color: #1e3b59', 'right: #000000', 'height: 10px']);
+		assert.deepEqual(propertiesFor('.item6'), ['background-color: black', 'color: #ddd']);
+		assert.deepEqual(propertiesFor('.item7'), ['background-color: white', 'color: #555']);
 	});
 
 	it('should correctly split mixin arguments', function() {
