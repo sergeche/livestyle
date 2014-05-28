@@ -1,13 +1,12 @@
-.foo .bar, .foo .baz {
-    display: none;
+.clearfix() {
+  // ...
 }
-
-.ext1 .ext2 {
-    &:extend(.foo all);
+.clearfix {
+  .clearfix();
 }
-
-.ext3,
-.ext4 {
-  &:extend(.foo all);
-  &:extend(.bar all);
+.clearfix {
+  .clearfix();
+}
+.foo {
+  .clearfix();
 }
