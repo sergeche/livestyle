@@ -10,6 +10,7 @@ var lessResolver = require('../../../lib/preprocessor/less/resolver');
 var preprocessor = require('../../../lib/preprocessor/resolver');
 var selector = require('../../../lib/preprocessor/selector');
 var lessCtx = require('../../../lib/preprocessor/less/context');
+var logger = require('../../../lib/logger');
 
 function readFile(filePath) {
 	if (filePath.charAt(0) !== '/') {
@@ -52,6 +53,8 @@ function resolveCSS(tree) {
 	return tree.sectionList();
 }
 
+logger.silent(true);
+
 describe('LESS extend', function() {
 	testUtils.getTreeSet(p('extend'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
@@ -67,6 +70,20 @@ describe('LESS extend', function() {
 
 describe('LESS nesting', function() {
 	testUtils.getTreeSet(p('nesting'), 'less').forEach(function(item) {
+		it('on file ' + item.preprocessorFile, function() {
+			var less = resolveLESS(item.preprocessor);
+			var css = resolveCSS(item.css);
+
+			// console.log(_.pluck(less, 'path'));
+			less.forEach(function(item, i) {
+				assert.deepEqual(np(i, item.path), np(i, css[i].path));
+			});
+		});
+	});
+});
+
+describe.only('LESS mixins', function() {
+	testUtils.getTreeSet(p('mixin'), 'less').forEach(function(item) {
 		it('on file ' + item.preprocessorFile, function() {
 			var less = resolveLESS(item.preprocessor);
 			var css = resolveCSS(item.css);
@@ -130,7 +147,7 @@ describe('LESS generic', function() {
 		assert.equal(patchedSource, '@v:12px; @c:#fc0; a {b: @v + 2 / 1 + 2px; c: @c + #001466; d: lighten(@c, 10%) + #000a33; }');
 	});
 
-	it.only('should resolve mixins', function() {
+	it('should resolve mixins', function() {
 		var lessTree = lessResolver.resolve(readFile('common/resolve.less'));
 		var sections = lessTree.sectionList();
 		var propertiesFor = function(name) {
