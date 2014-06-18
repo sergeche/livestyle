@@ -9,7 +9,6 @@ var locator = require('../../../lib/locator');
 var lessResolver = require('../../../lib/preprocessor/less/resolver');
 var preprocessor = require('../../../lib/preprocessor/resolver');
 var selector = require('../../../lib/preprocessor/selector');
-var lessCtx = require('../../../lib/preprocessor/less/context');
 var logger = require('../../../lib/logger');
 
 function readFile(filePath) {

@@ -1,0 +1,7 @@
+.call-lock-mixin .call-inner-lock-mixin {
+  a: 1;
+  x: 1;
+}
+.failed {
+  one-hundred: not-equal-to-1;
+}
