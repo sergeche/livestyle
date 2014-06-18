@@ -1,23 +1,7 @@
-.mixin-arguments (@width: 0px, ...) {
-    border: @arguments;
-    width: @width;
-}
+guard-default-basic-1 {
+    .m(1)                   {case:     1}
+    .m(@x) when (default()) {default: @x}
 
-.arguments {
-    .mixin-arguments(1px, solid, black);
-}
-.arguments2 {
-    .mixin-arguments();
-}
-.arguments3 {
-    .mixin-arguments;
-}
-
-.mixin-arguments2 (@width, @rest...) {
-    border: @arguments;
-    rest: @rest;
-    width: @width;
-}
-.arguments4 {
-    .mixin-arguments2(0, 1, 2, 3, 4);
+    &-1 {.m(1)}
+    &-2 {.m(2)}
 }
